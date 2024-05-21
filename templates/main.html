@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stethoscope Sound Library</title>
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/styles.css')}}"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="App">
+      <header class="App-Header">
+        <img src="{{url_for('static', filename="/images/umb-logo.svg")}}"
+        alt="UMB Logo" class="logo"/>
+      </header>
+      <div class="App-Title">
+        <h1 id="Title">Stethoscope Sound Library</h1>
+      </div>
+      <div class="Library-Select">
+        <div class="sidebar">
+          <h3>Libraries</h3>
+          <ul id="libraryList"></ul>
+        </div>
+        <div class="File-Select">
+          <h3>Audio Files</h3>
+          <ul id="audioList"></ul>
+        </div>
+      </div>
+      <div class="Audio-Player">
+        <audio id="audioPlayer" controls loop>
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+      <footer class="App-Footer">
+        <h3 id="Footer-text">
+          Copyright &copy <span id="copyrightYear">2024</span>
+          University of Massacussetts Boston
+        </h3>
+      </footer>
+    </div>
+    <script src="{{url_for('static', filename='js/scripts.js')}}"></script>
+  </body>
+</html>

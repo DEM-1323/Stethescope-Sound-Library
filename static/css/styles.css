@@ -1,0 +1,161 @@
+*{
+  box-sizing: border-box;
+}
+
+/* Use a mobile-first approach: style for mobile first, then larger screens */
+html,
+body {
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Arial', sans-serif; /* Your preferred font */
+  background-color: #005A8B;
+  overflow: hidden;
+}
+
+h1, h3 {
+    font-family: 'DM Serif Text', serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+
+/* Make your app container fill the available height and center its content */
+.App {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Vertical centering */
+  align-items: center; /* Horizontal centering */
+  min-height: 100vh; /* Use the full height of the viewport */
+  width: 100%;
+  max-width: 1024px;
+  margin: auto;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+.App-Header {
+    display: flex;
+    background-color: #005A8B;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    height: 8vh; min-height: 80px;
+    box-shadow: 0 4px 3px 2px rgba(0, 0, 0, 0.2);
+}
+
+.logo{
+    width: auto; height: 70%;
+    min-width: 132px;
+}
+/*.App{
+    width: 834px; height:1134px;
+    background-color: white;
+    text-align: center;
+    place-items: center;
+    border: 10px dashed;
+}*/
+
+.App-Title {
+    display: flex;
+    flex: 0 1 calc(25px + 8vh);
+    color:#005A8B;
+    width: 100%;
+    border: 2px dashed;
+    justify-content: center;
+    align-items: center;
+    margin-top: calc(10px + .5vh);
+}
+
+#Title {
+    font-size: 40px;
+}
+
+.Library-Select{
+    display: flex;
+    flex: 0 1 auto;
+    height: 30%;
+    width: 80%;
+    border: 2px solid;
+    border-radius: 13px;
+    overflow-y: auto;
+    margin-top: calc(10px + .5vh);
+    box-shadow: 2px 8px 5px 3px rgba(0, 0, 0, 0.2);
+}
+
+.Library-Select h3 {
+    margin-top: 0;
+}
+
+.sidebar, .File-Select {
+    flex: 1;
+    padding: 10px;
+    background-color: #005A8B;
+    color: white;
+}
+
+
+h3 {
+    color: white;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+    max-height: 200px;
+}
+
+ul li {
+    padding: 5px;
+    cursor: pointer;
+}
+
+ul li:hover {
+    background-color: #CCCCCC;
+}
+
+.Audio-Player {
+    display: flex;
+    flex: 0 1 calc(100px + 35vh);
+    width: 80%;
+    border: 2px dashed;
+    justify-content: center;
+    align-items: center;
+    margin: calc(10px + 5vh) 0;
+    box-shadow: 2px 8px 5px 3px rgba(0, 0, 0, 0.2);
+}
+
+.App-Footer {
+    display: flex;
+    background-color: #005A8B;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    padding: 4vh 0;
+    height: 80px;
+    margin-top: auto;
+}
+
+@media (min-width: 1025px) {
+    html, body {
+        background-color: #fff;
+    }
+    .App {
+      max-width: 1024px; /* Set a max-width if you want to restrict the app size */
+      margin: auto; /* This will center the max-width container */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: add shadow for better focus */
+    }
+    .App-Header {
+        max-height: 96.33px;
+        
+    }
+    
+
+}
