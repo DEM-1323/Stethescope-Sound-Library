@@ -27,12 +27,12 @@ h1, h3 {
   flex-direction: column;
   justify-content: flex-start; /* Vertical centering */
   align-items: center; /* Horizontal centering */
-  min-height: 100vh; /* Use the full height of the viewport */
+  height: 100vh; /* Use the full height of the viewport */
   width: 100%;
   max-width: 1024px;
   margin: auto;
   background-color: #fff;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 .App-Header {
@@ -71,7 +71,8 @@ h1, h3 {
 }
 
 #Title {
-    font-size: 40px;
+    
+    font-size: calc(20px + 2vw);
 }
 
 .Library-Select{
@@ -79,27 +80,31 @@ h1, h3 {
     flex: 0 1 auto;
     height: 30%;
     width: 80%;
+    min-height: 100px;
+    max-height: 250px;
     border: 2px solid;
     border-radius: 13px;
     overflow-y: auto;
     margin-top: calc(10px + .5vh);
     box-shadow: 2px 8px 5px 3px rgba(0, 0, 0, 0.2);
+    background-color: #005A8B;
 }
 
 .Library-Select h3 {
     margin-top: 0;
+    margin-bottom: .2vh;
 }
 
 .sidebar, .File-Select {
     flex: 1;
     padding: 10px;
-    background-color: #005A8B;
     color: white;
 }
 
 
 h3 {
     color: white;
+    font-size: calc(10px + 1.2vw);
 }
 
 ul {
@@ -143,6 +148,8 @@ ul li:hover {
     margin-top: auto;
 }
 
+
+
 @media (min-width: 1025px) {
     html, body {
         background-color: #fff;
@@ -155,6 +162,12 @@ ul li:hover {
     .App-Header {
         max-height: 96.33px;
         
+    }
+    .App-Footer {
+        padding: 0;
+    }
+    h3 {
+        font-size: calc(5px + 1vw);
     }
     
 
