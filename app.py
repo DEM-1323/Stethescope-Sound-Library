@@ -1,5 +1,6 @@
 from flask import Flask, send_from_directory, jsonify, render_template
 from urllib.parse import unquote
+from pydub import AudioSegment
 import os
 
 app = Flask(__name__)
@@ -21,7 +22,9 @@ def list_directories():
 def list_files(directory):
     # Decode the URL-encoded directory path
     directory = unquote(directory)
+    directory = os.path.normpath(directory).replace('..', '')
     directory_path = os.path.join(AUDIO_LIB, directory)
+    print("Requested directory:", directory_path) 
     
     # Security check to ensure the directory is within the allowed path
     if not directory_path.startswith(AUDIO_LIB):
@@ -33,7 +36,16 @@ def list_files(directory):
     # List all audio files in the directory
     try:
         files = os.listdir(directory_path)
-        audio_files = [f for f in files if f.endswith(('.mp3', '.wav', '.aac'))]
+        audio_files = []
+        for f in files:
+            if f.endswith(('.mp3', '.wav', '.aac')):
+                audio_path = os.path.join(directory_path, f)
+                audio = AudioSegment.from_file(audio_path)
+                duration = len(audio) / 1000  # duration in seconds
+                audio_files.append((f, duration))
+        print("Directory path:", directory_path)
+        print("Audio files found:", audio_files)
+
         return jsonify(audio_files)
     except FileNotFoundError:
         return jsonify({"error": "Directory not found"}), 404

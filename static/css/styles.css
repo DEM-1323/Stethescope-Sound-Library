@@ -74,7 +74,6 @@ h1, h3 , ul, li {
 }
 
 #Title {
-    
     font-size: calc(2vh + 2vw);
 }
 
@@ -108,8 +107,35 @@ h1, h3 , ul, li {
     flex: 1.25;
     border-right: solid #005A8B;
 }
+
+#libraryList {
+    overflow-y: auto;
+}
+
+#libraryList li:hover {
+    background-color: #CCCCCC;
+}
+
 .File-Select {
     flex: 1.75;
+}
+
+.File-Viewer {
+    display: flex;
+    flex-direction: row;
+    overflow-y: auto;
+}
+
+.File-Viewer ul li{
+    overflow-y: hidden;
+}
+
+#audioList {
+    border-right: solid #005A8B;
+}
+
+#audioList li:hover {
+    background-color: #CCCCCC;
 }
 
 h3 {
@@ -121,7 +147,6 @@ ul {
     list-style: none;
     padding: 0;
     margin: 0;
-    overflow-y: auto;
     max-height: 200px;
 }
 
@@ -131,9 +156,8 @@ ul li {
     color: #005A8B;
 }
 
-ul li:hover {
-    background-color: #CCCCCC;
-}
+
+
 
 .Audio-Player {
     display: flex;
