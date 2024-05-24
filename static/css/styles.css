@@ -11,10 +11,10 @@ body {
   height: 100%;
   font-family: 'Arial', sans-serif; /* Your preferred font */
   background-color: #005A8B;
-  overflow: hidden;
+  overflow: hidden auto;
 }
 
-h1, h3 {
+h1, h3 , ul, li {
     font-family: 'DM Serif Text', serif;
     font-weight: 400;
     font-style: normal;
@@ -32,7 +32,7 @@ h1, h3 {
   max-width: 1024px;
   margin: auto;
   background-color: #fff;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 .App-Header {
@@ -43,13 +43,16 @@ h1, h3 {
     position: relative;
     z-index: 10;
     width: 100%;
-    height: 8vh; min-height: 80px;
-    box-shadow: 0 4px 3px 2px rgba(0, 0, 0, 0.2);
+    margin-bottom: auto;
+    height: 80px;
+    padding: 4vh 0;
+    box-shadow: 0px 2px 8px 3px rgba(0, 0, 0, 0.2);
 }
 
 .logo{
-    width: auto; height: 70%;
-    min-width: 132px;
+    width: auto; min-width: 132px;
+    height: 6vh; min-height: 50px; max-height: 75px;
+    
 }
 /*.App{
     width: 834px; height:1134px;
@@ -72,7 +75,7 @@ h1, h3 {
 
 #Title {
     
-    font-size: calc(20px + 2vw);
+    font-size: calc(2vh + 2vw);
 }
 
 .Library-Select{
@@ -84,27 +87,34 @@ h1, h3 {
     max-height: 250px;
     border: 2px solid;
     border-radius: 13px;
-    overflow-y: auto;
+    overflow-y: hidden;
     margin-top: calc(10px + .5vh);
-    box-shadow: 2px 8px 5px 3px rgba(0, 0, 0, 0.2);
-    background-color: #005A8B;
+    box-shadow: 4px 5px 9px 1px rgba(0, 0, 0, 0.2);
+    background-color: white;
 }
 
 .Library-Select h3 {
     margin-top: 0;
-    margin-bottom: .2vh;
+    margin-bottom: 0;
+    padding: .75vh 1vh;
+    font-size: calc(10px + .5vw + .5vh);
+    background-color: #005A8B;
 }
 
 .sidebar, .File-Select {
-    flex: 1;
-    padding: 10px;
     color: white;
 }
-
+.sidebar {
+    flex: 1.25;
+    border-right: solid #005A8B;
+}
+.File-Select {
+    flex: 1.75;
+}
 
 h3 {
     color: white;
-    font-size: calc(10px + 1.2vw);
+    font-size: calc(5px + .5vw + .5vh);
 }
 
 ul {
@@ -116,8 +126,9 @@ ul {
 }
 
 ul li {
-    padding: 5px;
+    padding: .75vh 1.75vh;
     cursor: pointer;
+    color: #005A8B;
 }
 
 ul li:hover {
@@ -132,7 +143,7 @@ ul li:hover {
     justify-content: center;
     align-items: center;
     margin: calc(10px + 5vh) 0;
-    box-shadow: 2px 8px 5px 3px rgba(0, 0, 0, 0.2);
+    box-shadow: 4px 5px 9px 1px rgba(0, 0, 0, 0.2);
 }
 
 .App-Footer {
@@ -160,15 +171,27 @@ ul li:hover {
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: add shadow for better focus */
     }
     .App-Header {
-        max-height: 96.33px;
-        
+        padding: 0;
+    }
+    .logo {
+        max-height: 50px;
+    }
+    #Title {
+        font-size: calc(10px + 1vh + 1vw);
+    }
+    .Library-Select h3 {
+        font-size: calc(10px + .25vw + .5vh);
+    }
+    h3 {
+        font-size: calc(5px + .25vw + .25vh);
+    }
+    ul li {
+        padding: .5vh 2vh;
     }
     .App-Footer {
         padding: 0;
     }
-    h3 {
-        font-size: calc(5px + 1vw);
-    }
+    
     
 
 }
