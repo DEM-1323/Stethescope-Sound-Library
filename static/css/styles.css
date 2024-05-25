@@ -117,32 +117,26 @@ h1, h3 , ul, li {
     cursor: pointer;
 }
 
-#li.pressed {
-    color: #FEDE42;
-}
 
 .File-Select {
     flex: 1.75;
 }
 
-.File-Viewer {
-    display: flex;
-    flex-direction: row;
-    overflow-y: auto;
-}
 
-.File-Viewer ul li{
-    overflow-y: hidden;
-}
-
-#audioList {
-    flex: 2;
-    border-right: solid #005A8B;
-}
-
-#audioList li:hover {
-    background-color: #CCCCCC;
+.audio-item {
     cursor: pointer;
+}
+
+.audio-name {
+    font-size: 16px;
+    color: #333;
+}
+
+.time-code {
+    font-size: 14px;
+    color: #666;
+    float: right;
+    padding-right: 20px; /* Space out the time code from the name */
 }
 
 h3 {
@@ -162,7 +156,14 @@ ul li {
     color: #005A8B;
 }
 
-
+li.selected {
+    color: #132245;
+    background-color: #FEDE42;
+    border-top: solid #005A8B; border-bottom: solid #005A8B; 
+}
+li.selected:first-child {
+    border-top: none;
+}
 
 
 .Audio-Player {
