@@ -39,6 +39,7 @@ function loadAudioFiles(directory) {
         return; // Exit if not an array
       }
       const audioListElement = document.getElementById("audioList");
+      audioListElement.innerHTML = ""; // Clear the list first
       files.forEach((file) => {
         const listItem = document.createElement("li");
         listItem.classList.add("audio-item");
