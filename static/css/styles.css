@@ -114,6 +114,11 @@ h1, h3 , ul, li {
 
 #libraryList li:hover {
     background-color: #CCCCCC;
+    cursor: pointer;
+}
+
+#li.pressed {
+    color: #FEDE42;
 }
 
 .File-Select {
@@ -131,11 +136,13 @@ h1, h3 , ul, li {
 }
 
 #audioList {
+    flex: 2;
     border-right: solid #005A8B;
 }
 
 #audioList li:hover {
     background-color: #CCCCCC;
+    cursor: pointer;
 }
 
 h3 {
@@ -152,7 +159,6 @@ ul {
 
 ul li {
     padding: .75vh 1.75vh;
-    cursor: pointer;
     color: #005A8B;
 }
 

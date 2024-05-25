@@ -9,7 +9,10 @@ function loadLibraries() {
       directories.forEach((dir) => {
         const li = document.createElement("li");
         li.textContent = dir;
-        li.addEventListener("click", () => loadAudioFiles(dir));
+        li.addEventListener("click", () => {
+          loadAudioFiles(dir);
+          highlightLibrary(li);
+        });
         libraryListElement.appendChild(li);
       });
     })
@@ -36,14 +39,14 @@ function loadAudioFiles(directory) {
 
       files.forEach((file) => {
         const audioFile = document.createElement("li");
-        audioFile.textContent = file[0];
-        audioFile.addEventListener("click", () =>
-          playAudio(directory, file[0])
-        );
-        audioListElement.appendChild(audioFile);
-
         const timeCode = document.createElement("li");
+        audioFile.textContent = file[0];
         timeCode.textContent = `${file[1].toFixed(2)} seconds`;
+        audioFile.addEventListener("click", () => {
+          playAudio(directory, file[0]);
+          highlightAudio(audioFile, timeCode);
+        });
+        audioListElement.appendChild(audioFile);
         timeCodesElement.appendChild(timeCode);
       });
     })
@@ -59,6 +62,54 @@ function playAudio(directory, file) {
   const safeFile = encodeURIComponent(file); // Sanitize file name
   audioPlayer.src = `/audio/${safeDirectory}/${safeFile}`;
   audioPlayer.play();
+}
+
+let lastSelectedLib = null; // This will store the last clicked library list item
+
+function highlightLibrary(listItem) {
+  // Reset the last selected item if it exists
+  if (lastSelectedLib && lastSelectedLib !== listItem) {
+    lastSelectedLib.style.color = ""; // Revert to original color
+    lastSelectedLib.style.backgroundColor = ""; // Revert to original background color
+    lastSelectedLib.style.borderBottom = "";
+    lastSelectedLib.style.boxShadow = ""; // Revert to original box shadow
+  }
+
+  // Apply new style to the current item
+  listItem.style.color = "#132245";
+  listItem.style.backgroundColor = "#FEDE42";
+  listItem.style.borderBottom = "solid #005A8B";
+  //listItem.style.boxShadow = "inset 0px -1px 6px 1px rgba(0, 0, 0, 0.2)";
+
+  // Update lastSelectedLib to be the current item
+  lastSelectedLib = listItem;
+}
+
+let lastSelectedAudio = null;
+
+function highlightAudio(audioFile, timeCode) {
+  if (
+    lastSelectedAudio &&
+    lastSelectedAudio.audioFile !== audioFile &&
+    lastSelectedAudio.timeCode !== timeCode
+  ) {
+    lastSelectedAudio.audioFile.style.color = ""; // Revert to original color for audioFile
+    lastSelectedAudio.audioFile.style.backgroundColor = ""; // Revert to original background color for audioFile
+    lastSelectedAudio.audioFile.style.borderBottom = ""; // Revert to original border
+    lastSelectedAudio.timeCode.style.color = ""; // Revert to original color for timeCode
+    lastSelectedAudio.timeCode.style.backgroundColor = ""; // Revert to original background color for timeCode
+    lastSelectedAudio.timeCode.style.borderBottom = "";
+  }
+  // Apply new style to the current items
+  audioFile.style.color = "#132245";
+  audioFile.style.backgroundColor = "#FEDE42";
+  audioFile.style.borderBottom = "solid #005A8B";
+  timeCode.style.color = "#132245";
+  timeCode.style.backgroundColor = "#FEDE42";
+  timeCode.style.borderBottom = "solid #005A8B";
+
+  // Update lastSelectedAudio to be the current items
+  lastSelectedAudio = { audioFile, timeCode };
 }
 
 // Initialize the library list when the document is loaded
