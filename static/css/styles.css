@@ -83,7 +83,7 @@ h1, h3 , ul, li {
     height: 30%;
     width: 80%;
     min-height: 100px;
-    max-height: 251px;
+    max-height: 250px;
     border: 2px solid;
     border-radius: 13px;
     overflow-y: hidden;
@@ -104,9 +104,17 @@ h1, h3 , ul, li {
     color: white;
 }
 .sidebar {
+    display: flex;
+    flex-direction: column;
     flex: 1.25;
     position: relative;
 }
+
+#libraryList {
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
 #libraryList::after {
     content: '';
     position: absolute;
@@ -118,23 +126,21 @@ h1, h3 , ul, li {
     z-index: 1;
 }
 
-#libraryList {
-    overflow-y: auto;
-}
-
 li:hover {
     background-color: #CCCCCC;
     cursor: pointer;
 }
 
-
 .File-Select {
+    display: flex;
+    flex-direction: column;
     flex: 1.75;
     position: relative;
 }
 
 #audioList {
     overflow-y: auto;
+    flex-grow: 1;
 }
 
 .audio-list {
