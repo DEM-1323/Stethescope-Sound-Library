@@ -83,7 +83,7 @@ h1, h3 , ul, li {
     height: 30%;
     width: 80%;
     min-height: 100px;
-    max-height: 250px;
+    max-height: 251px;
     border: 2px solid;
     border-radius: 13px;
     overflow-y: hidden;
@@ -105,14 +105,24 @@ h1, h3 , ul, li {
 }
 .sidebar {
     flex: 1.25;
-    border-right: solid #005A8B;
+    position: relative;
+}
+#libraryList::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(100%); /* Adjust this depending on where you want the line */
+    width: 2px; /* Width of the line */
+    background-color: #005A8B; /* Color of the line */
+    z-index: 1;
 }
 
 #libraryList {
     overflow-y: auto;
 }
 
-#libraryList li:hover {
+li:hover {
     background-color: #CCCCCC;
     cursor: pointer;
 }
@@ -120,23 +130,52 @@ h1, h3 , ul, li {
 
 .File-Select {
     flex: 1.75;
+    position: relative;
 }
 
+#audioList {
+    overflow-y: auto;
+}
+
+.audio-list {
+    position: relative;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    
+}
 
 .audio-item {
     cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
 }
 
 .audio-name {
     font-size: 16px;
-    color: #333;
+    color: #005A8B;
+    flex-grow: 1;
+    padding-right: 20px;
 }
 
 .time-code {
     font-size: 14px;
-    color: #666;
-    float: right;
-    padding-right: 20px; /* Space out the time code from the name */
+    color: #005A8B;
+    text-align: right;
+}
+
+.File-Select.files::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(70%); /* Adjust this depending on where you want the line */
+    width: 2px; /* Width of the line */
+    background-color: #005A8B; /* Color of the line */
+    z-index: 1;
 }
 
 h3 {
@@ -160,6 +199,7 @@ li.selected {
     color: #132245;
     background-color: #FEDE42;
     border-top: solid #005A8B; border-bottom: solid #005A8B; 
+    box-shadow: inset 0px -1px 2px 1px rgba(0, 0, 0, 0.2);
 }
 li.selected:first-child {
     border-top: none;

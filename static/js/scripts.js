@@ -38,8 +38,21 @@ function loadAudioFiles(directory) {
         alert("Failed to load files: " + (files.error || "Unknown error"));
         return; // Exit if not an array
       }
+      const fileSelectElement = document.getElementById("File-Select");
       const audioListElement = document.getElementById("audioList");
       audioListElement.innerHTML = ""; // Clear the list first
+
+      if (files.length === 0) {
+        console.error("No files found or the files array is empty.");
+        fileSelectElement.classList.remove("files");
+        const listItem = document.createElement("li");
+        listItem.classList.add("audio-item");
+        listItem.textContent = "No audio files available in this directory.";
+        audioListElement.appendChild(listItem);
+        //alert("No audio files available in this directory.");
+        return; // Exit the function to prevent further execution
+      }
+
       files.forEach((file) => {
         const listItem = document.createElement("li");
         listItem.classList.add("audio-item");
@@ -65,9 +78,11 @@ function loadAudioFiles(directory) {
 
         audioListElement.appendChild(listItem);
       });
+      fileSelectElement.classList.add("files");
     })
     .catch((error) => {
       console.error("Error fetching audio files:", error);
+      document.getElementById("File-Select").classList.remove("files");
     });
 }
 
