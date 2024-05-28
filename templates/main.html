@@ -14,6 +14,10 @@
       href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
   </head>
   <body>
     <div class="App">
@@ -31,13 +35,26 @@
         </div>
         <div class="File-Select" id="File-Select">
           <h3>Audio Files</h3>
-          <ul id="audioList" class="audio-list"></ul>
+          <ul id="audioList"></ul>
         </div>
       </div>
       <div class="Audio-Player">
-        <audio id="audioPlayer" controls loop>
-          Your browser does not support the audio element.
-        </audio>
+        <h2 class="audio-title">Audio File Title</h2>
+        <button id="bigPlayPauseBtn" class="play-pause-btn">
+          <i class="fa-regular fa-circle-play"></i>
+        </button>
+        <input type="range" id="seekSlider" value="0" class="seek-slider" />
+        <div class="playBackCtrls">
+          <button id="prevBtn" class="skip-btn">
+            <i class="fa-solid fa-backward-step"></i>
+          </button>
+          <button id="playPauseBtn" class="play-pause-btn">
+            <i class="fa-solid fa-play"></i>
+          </button>
+          <button id="nextBtn" class="skip-btn">
+            <i class="fa-solid fa-forward-step"></i>
+          </button>
+        </div>
       </div>
       <footer class="App-Footer">
         <h3 id="Footer-text">

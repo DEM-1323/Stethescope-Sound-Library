@@ -88,7 +88,7 @@ h1, h3 , ul, li {
     border-radius: 13px;
     overflow-y: hidden;
     margin-top: calc(10px + .5vh);
-    box-shadow: 4px 5px 9px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, 0.2);
     background-color: white;
 }
 
@@ -98,6 +98,7 @@ h1, h3 , ul, li {
     padding: .75vh 1vh;
     font-size: calc(10px + .5vw + .5vh);
     background-color: #005A8B;
+    border-bottom: solid #78AFE9;
 }
 
 .sidebar, .File-Select {
@@ -125,6 +126,7 @@ h1, h3 , ul, li {
     background-color: #005A8B; /* Color of the line */
     z-index: 1;
 }
+
 
 li:hover {
     background-color: #CCCCCC;
@@ -211,17 +213,52 @@ li.selected:first-child {
     border-top: none;
 }
 
-
+/* audio player styles */
 .Audio-Player {
-    display: flex;
     flex: 0 1 calc(100px + 35vh);
+    display: flex;
+    flex-direction: column;
+    border-radius: 13px;
     width: 80%;
     border: 2px dashed;
     justify-content: center;
     align-items: center;
     margin: calc(10px + 5vh) 0;
-    box-shadow: 4px 5px 9px 1px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    color: white;
+    box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, 0.2);
+    background-color: #005A8B;
+}.audio-player {
+    width: 300px;
+    height: 100px;
+    
+    
+    display: flex;
+    
+    align-items: center;
+    justify-content: center;
+    
+    border-radius: 10px;
 }
+
+.audio-title {
+    margin: 10px 0;
+}
+
+.play-pause-btn, .skip-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.seek-slider {
+    width: 90%;
+    cursor: pointer;
+}
+
+
 
 .App-Footer {
     display: flex;
