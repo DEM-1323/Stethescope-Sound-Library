@@ -87,7 +87,7 @@ h1, h3 , ul, li {
     border: 2px solid;
     border-radius: 13px;
     overflow-y: hidden;
-    margin-top: calc(10px + .5vh);
+    margin-top: calc(17px + .5vh);
     box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, 0.2);
     background-color: white;
 }
@@ -159,19 +159,18 @@ li:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
+    padding: .75vh 1.5vh;
 }
 
 .audio-name {
-    font-size: 16px;
     color: #005A8B;
     flex-grow: 1;
     padding-right: 20px;
 }
 
 .time-code {
-    font-size: 14px;
     color: #005A8B;
+    font-size: calc(4px + .5vw + .5vh);
     text-align: right;
 }
 
@@ -180,7 +179,7 @@ li:hover {
     position: absolute;
     top: 0;
     bottom: 0;
-    left: calc(70%); /* Adjust this depending on where you want the line */
+    left: calc(75%); /* Adjust this depending on where you want the line */
     width: 2px; /* Width of the line */
     background-color: #005A8B; /* Color of the line */
     z-index: 1;
@@ -200,6 +199,7 @@ ul {
 
 ul li {
     padding: .75vh 1.75vh;
+    font-size: calc(8px + .5vw + .5vh);
     color: #005A8B;
 }
 
@@ -226,39 +226,87 @@ li.selected:first-child {
     margin: calc(10px + 5vh) 0;
     padding: 20px;
     color: white;
-    box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 2px 2px 6px 3px rgba(0, 0, 0, 0.2);
     background-color: #005A8B;
-}.audio-player {
-    width: 300px;
-    height: 100px;
-    
-    
-    display: flex;
-    
-    align-items: center;
-    justify-content: center;
-    
-    border-radius: 10px;
 }
 
 .audio-title {
-    margin: 10px 0;
+    margin: 1vh 0 auto 0;
+}
+
+#bigPlayPauseBtn {
+    font-size: 15vh;
+    margin: 0 0 auto 0;
+}
+
+
+.seek-slider {
+    appearance: none;
+    width: 90%;
+    cursor: pointer;
+    background: none;
+    padding: 0;
+    margin:0;
+}
+
+.seek-slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Required for WebKit browsers */
+    appearance: none;
+    width: 3vh; /* Width of the thumb */
+    height: 3vh; /* Height of the thumb */
+    margin-top: -.75vh;
+    background: #005A8B; /* Thumb background color */
+    cursor: pointer; /* Cursor on hover */
+    border: solid 4px #78AFE9;
+    border-radius: 50%; /* Makes it circular */
+}
+
+/* Styles the slider track for WebKit browsers */
+.seek-slider::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 1.5vh;
+    background: white;
+    border-radius: 100vh;
+}
+.seek-slider::-moz-range-thumb {
+    -webkit-appearance: none; /* Required for WebKit browsers */
+    appearance: none;
+    width: 3vh; /* Width of the thumb */
+    height: 3vh; /* Height of the thumb */
+    margin-top: -.75vh;
+    background: #005A8B; /* Thumb background color */
+    cursor: pointer; /* Cursor on hover */
+    border: solid 4px #78AFE9;
+    border-radius: 50%; /* Makes it circular */
+}
+
+/* Styles the slider track for WebKit browsers */
+.seek-slider::-moz-range-track {
+    width: 100%;
+    height: 1.5vh;
+    background: white;
+    border-radius: 100vh;
+}
+
+/* Optional: style for hover effect on the slider */
+.seek-slider:hover {
+    opacity: 1; /* Full opacity on hover */
+}
+
+.playBackCtrls {
+    margin: 2vh 0 3vh 0;
+    display: flex;
+    flex-direction: row;
 }
 
 .play-pause-btn, .skip-btn {
     background: none;
     border: none;
     color: white;
-    font-size: 16px;
     cursor: pointer;
+    font-size: 3vh;
+    padding: 0 1vw;
 }
-
-.seek-slider {
-    width: 90%;
-    cursor: pointer;
-}
-
-
 
 .App-Footer {
     display: flex;
@@ -301,6 +349,7 @@ li.selected:first-child {
     }
     ul li {
         padding: .5vh 2vh;
+        font-size: calc(8px + .25vw + .5vh);
     }
     .App-Footer {
         padding: 0;

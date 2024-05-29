@@ -1,3 +1,7 @@
+document.addEventListener("DOMContentLoaded", function () {
+  loadLibraries(); // Load libraries when document is ready
+});
+
 // This function fetches the list of directories from the Flask server
 function loadLibraries() {
   fetch("/directories")
@@ -63,7 +67,7 @@ function loadAudioFiles(directory) {
 
         const timeCode = document.createElement("span");
         timeCode.classList.add("time-code");
-        timeCode.textContent = `${file[1].toFixed(2)} seconds`;
+        timeCode.textContent = `${file[1].toFixed(2)} secs`;
 
         listItem.appendChild(audioName);
         listItem.appendChild(timeCode);
@@ -85,15 +89,72 @@ function loadAudioFiles(directory) {
       document.getElementById("File-Select").classList.remove("files");
     });
 }
+let audio = new Audio(); // Global audio object
+let isPlaying = false; // Track if audio is playing
 
-// This function plays the selected audio file
-function playAudio(directory, file) {
-  const audioPlayer = document.getElementById("audioPlayer");
-  const safeDirectory = encodeURIComponent(directory); // Sanitize directory
-  const safeFile = encodeURIComponent(file); // Sanitize file name
-  audioPlayer.src = `/audio/${safeDirectory}/${safeFile}`;
-  audioPlayer.play();
+// Setup global event listeners for audio controls
+function setupAudioControls() {
+  document
+    .getElementById("playPauseBtn")
+    .addEventListener("click", togglePlayPause);
+  document
+    .getElementById("bigPlayPauseBtn")
+    .addEventListener("click", togglePlayPause);
+  document.getElementById("seekSlider").addEventListener("input", seekAudio);
+
+  audio.addEventListener("timeupdate", updateSeekSlider);
 }
 
-// Initialize the library list when the document is loaded
-document.addEventListener("DOMContentLoaded", loadLibraries);
+// Toggle play/pause of audio
+function togglePlayPause() {
+  if (!audio.src) {
+    return; // Do nothing if no source is set
+  }
+  if (audio.paused) {
+    audio.play();
+    isPlaying = true;
+  } else {
+    audio.pause();
+    isPlaying = false;
+  }
+  updatePlayPauseButton();
+}
+
+// Update the seek slider based on current playback position
+function updateSeekSlider() {
+  const seekSlider = document.getElementById("seekSlider");
+  seekSlider.value = (audio.currentTime / audio.duration) * 100 || 0; // Update or reset to 0 if NaN
+}
+
+// Update the play/pause button icon based on current state
+function updatePlayPauseButton() {
+  const iconClass = isPlaying ? "fa-pause-circle" : "fa-play-circle";
+  const bigIconClass = isPlaying ? "fa-circle-pause" : "fa-circle-play";
+  document.getElementById(
+    "playPauseBtn"
+  ).innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
+  document.getElementById(
+    "bigPlayPauseBtn"
+  ).innerHTML = `<i class="fa-regular ${bigIconClass}"></i>`;
+}
+
+// Seek audio to new position
+function seekAudio() {
+  const seekSlider = document.getElementById("seekSlider");
+  if (audio.duration) {
+    audio.currentTime = (seekSlider.value / 100) * audio.duration;
+  }
+}
+
+// Load and play a specific audio file
+function playAudio(directory, file) {
+  const safeDirectory = encodeURIComponent(directory);
+  const safeFile = encodeURIComponent(file);
+  audio.src = `/audio/${safeDirectory}/${safeFile}`;
+  audio.load(); // Load new audio file
+  audio.play(); // Play new file
+  isPlaying = true; // Update playing state
+  updatePlayPauseButton();
+}
+
+setupAudioControls(); // Initialize audio controls once
