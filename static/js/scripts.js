@@ -102,7 +102,12 @@ function setupAudioControls() {
     .addEventListener("click", togglePlayPause);
   document.getElementById("seekSlider").addEventListener("input", seekAudio);
 
-  audio.addEventListener("timeupdate", updateSeekSlider);
+  audio.addEventListener("timeupdate", function () {
+    const seekSlider = document.getElementById("seekSlider");
+    const value = (audio.currentTime / audio.duration) * 100 || 0; // Calculate the current time percentage
+    seekSlider.style.background = `linear-gradient(to right, #FEDE42 0%, #FEDE42 ${value}%, #ddd ${value}%, #ddd 100%)`;
+    seekSlider.value = value;
+  });
 }
 
 // Toggle play/pause of audio
@@ -150,6 +155,8 @@ function seekAudio() {
 function playAudio(directory, file) {
   const safeDirectory = encodeURIComponent(directory);
   const safeFile = encodeURIComponent(file);
+  const nowPlaying = document.getElementById("nowPlaying");
+  nowPlaying.innerHTML = file;
   audio.src = `/audio/${safeDirectory}/${safeFile}`;
   audio.load(); // Load new audio file
   audio.play(); // Play new file

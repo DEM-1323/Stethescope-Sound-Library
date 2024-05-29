@@ -244,7 +244,8 @@ li.selected:first-child {
     appearance: none;
     width: 90%;
     cursor: pointer;
-    background: none;
+    background: white;
+    border-radius: 100vh;
     padding: 0;
     margin:0;
 }
@@ -265,8 +266,6 @@ li.selected:first-child {
 .seek-slider::-webkit-slider-runnable-track {
     width: 100%;
     height: 1.5vh;
-    background: white;
-    border-radius: 100vh;
 }
 .seek-slider::-moz-range-thumb {
     -webkit-appearance: none; /* Required for WebKit browsers */
@@ -284,8 +283,6 @@ li.selected:first-child {
 .seek-slider::-moz-range-track {
     width: 100%;
     height: 1.5vh;
-    background: white;
-    border-radius: 100vh;
 }
 
 /* Optional: style for hover effect on the slider */
