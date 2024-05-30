@@ -50,7 +50,7 @@ function loadAudioFiles(directory) {
         console.error("No files found or the files array is empty.");
         fileSelectElement.classList.remove("files");
         const listItem = document.createElement("li");
-        listItem.classList.add("audio-item");
+        listItem.classList.add("audio-item.empty");
         listItem.textContent = "No audio files available in this directory.";
         audioListElement.appendChild(listItem);
         //alert("No audio files available in this directory.");
@@ -61,15 +61,19 @@ function loadAudioFiles(directory) {
         const listItem = document.createElement("li");
         listItem.classList.add("audio-item");
 
+        const nameTrack = document.createElement("div");
+        nameTrack.classList.add("name-track");
+
         const audioName = document.createElement("span");
         audioName.classList.add("audio-name");
         audioName.textContent = file[0];
 
         const timeCode = document.createElement("span");
         timeCode.classList.add("time-code");
-        timeCode.textContent = `${file[1].toFixed(2)} secs`;
+        timeCode.textContent = formatTime(`${file[1].toFixed(2)}`);
 
-        listItem.appendChild(audioName);
+        nameTrack.appendChild(audioName);
+        listItem.appendChild(nameTrack);
         listItem.appendChild(timeCode);
         listItem.addEventListener("click", () => {
           const allLis = audioListElement.querySelectorAll("li");
@@ -107,6 +111,7 @@ function setupAudioControls() {
     const value = (audio.currentTime / audio.duration) * 100 || 0; // Calculate the current time percentage
     seekSlider.style.background = `linear-gradient(to right, #FEDE42 0%, #FEDE42 ${value}%, #ddd ${value}%, #ddd 100%)`;
     seekSlider.value = value;
+    updatePlaybackTime();
   });
 }
 
@@ -123,6 +128,22 @@ function togglePlayPause() {
     isPlaying = false;
   }
   updatePlayPauseButton();
+}
+
+function updatePlaybackTime() {
+  const playbackTimeElement = document.querySelector(".playback-time");
+  const currentTime = formatTime(audio.currentTime);
+  const duration = formatTime(audio.duration);
+
+  playbackTimeElement.textContent = `${currentTime} / ${duration}`;
+}
+
+// Helper function to format seconds into minutes:seconds
+function formatTime(timeInSeconds) {
+  const minutes = Math.floor(timeInSeconds / 60);
+  const seconds = Math.floor(timeInSeconds % 60);
+  const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+  return `${minutes}:${formattedSeconds}`;
 }
 
 // Update the seek slider based on current playback position

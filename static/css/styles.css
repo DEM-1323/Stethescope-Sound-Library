@@ -14,7 +14,7 @@ body {
   overflow: hidden auto;
 }
 
-h1, h3 , ul, li {
+h1, h2, h3, ul, li {
     font-family: 'DM Serif Text', serif;
     font-weight: 400;
     font-style: normal;
@@ -127,8 +127,12 @@ h1, h3 , ul, li {
     z-index: 1;
 }
 
+.sidebar li:hover {
+    background-color: #CCCCCC;
+    cursor: pointer;
+}
 
-li:hover {
+.audio-item:hover {
     background-color: #CCCCCC;
     cursor: pointer;
 }
@@ -159,19 +163,54 @@ li:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: .75vh 1.5vh;
+    padding: .75vh 0;
+}
+
+.audio-item.empty {
+    padding-left: 1.75vh;
+}
+.audio-item.empty:hover {
+    background-color: transparent !important;
 }
 
 .audio-name {
+    position: relative;
+    display: inline-block;
     color: #005A8B;
-    flex-grow: 1;
-    padding-right: 20px;
+    min-width: 100%;
+    
+}
+.name-track {
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: clip;
+    position: relative;
+    max-width: 78%;
+    padding-left: 1.75vh;
 }
 
+@keyframes scroll-text {
+    0%, 100% { 
+        transform: translateX(0); 
+    }
+    50% { 
+        transform: translateX(calc(-100% + 100px)); /* Adjust 100px to ensure it bounces back before the text fully exits the view */
+    }
+}
+
+.audio-name:hover {
+    /* Apply the scrolling animation on hover */
+    animation: scroll-text 10s linear infinite;
+}
+
+
 .time-code {
+    flex: 1;
     color: #005A8B;
     font-size: calc(4px + .5vw + .5vh);
-    text-align: right;
+    max-width: 21%;
+    text-align: center;
 }
 
 .File-Select.files::after {
@@ -213,6 +252,9 @@ li.selected:first-child {
     border-top: none;
 }
 
+li.selected:hover {
+    background-color: #FEDE42;
+}
 /* audio player styles */
 .Audio-Player {
     flex: 0 1 calc(100px + 35vh);
@@ -231,14 +273,19 @@ li.selected:first-child {
 }
 
 .audio-title {
-    margin: 1vh 0 auto 0;
+    margin: 1vh 0;
+    font-size: calc(12px + .5vw + .5vh)
 }
 
 #bigPlayPauseBtn {
     font-size: 15vh;
-    margin: 0 0 auto 0;
+    margin: auto 0;
 }
 
+.playback-time {
+    margin: .5vh 0 .5vh 82%;
+    text-align: right;
+}
 
 .seek-slider {
     appearance: none;
@@ -317,8 +364,22 @@ li.selected:first-child {
     height: 80px;
     margin-top: auto;
 }
-
-
+ 
+@media (min-width: 820px) and (max-width:1024px) {
+    html, body {
+        background-color: #fff;
+    }
+    .App {
+        margin: auto; /* This will center the max-width container */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: add shadow for better focus */
+      }
+      .Library-Select {
+        max-height: 250px
+    }
+      .Audio-Player {
+        margin: calc(10px + 3vh) 0;
+    }
+} 
 
 @media (min-width: 1025px) {
     html, body {
@@ -351,8 +412,17 @@ li.selected:first-child {
         padding: .5vh 2vh;
         font-size: calc(8px + .25vw + .5vh);
     }
-    .audio-item{
-        padding: .5vh 1.5vh;
+    .audio-item {
+        padding: .5vh 0;
+    }
+    .audio-item.empty {
+        padding-left: 1.5vh;
+    }
+    .name-track {
+        padding-left: 1.5vh;
+    }
+    .time-code {
+       font-size: calc(4px + .25vw + .5vh);
     }
     .Audio-Player {
         margin: calc(10px + 3vh) 0;
