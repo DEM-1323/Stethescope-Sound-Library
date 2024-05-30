@@ -325,7 +325,7 @@ li.selected:first-child {
         background-color: #fff;
     }
     .App {
-      max-width: 1024px; /* Set a max-width if you want to restrict the app size */
+      max-width: 820px; /* Set a max-width if you want to restrict the app size */
       margin: auto; /* This will center the max-width container */
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: add shadow for better focus */
     }
@@ -338,6 +338,9 @@ li.selected:first-child {
     #Title {
         font-size: calc(10px + 1vh + 1vw);
     }
+    .Library-Select {
+        max-height: 250px
+    }
     .Library-Select h3 {
         font-size: calc(10px + .25vw + .5vh);
     }
@@ -347,6 +350,12 @@ li.selected:first-child {
     ul li {
         padding: .5vh 2vh;
         font-size: calc(8px + .25vw + .5vh);
+    }
+    .audio-item{
+        padding: .5vh 1.5vh;
+    }
+    .Audio-Player {
+        margin: calc(10px + 3vh) 0;
     }
     .App-Footer {
         padding: 0;
