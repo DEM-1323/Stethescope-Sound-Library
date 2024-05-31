@@ -199,6 +199,9 @@ h1, h2, h3, ul, li {
     }
 }
 
+.audio-name.long-name {
+    animation: scroll-text 10s linear infinite;
+}
 .audio-name:hover {
     /* Apply the scrolling animation on hover */
     animation: scroll-text 10s linear infinite;
@@ -272,9 +275,24 @@ li.selected:hover {
     background-color: #005A8B;
 }
 
+.title-track{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: clip;
+    position: relative;
+    width: 70%;
+    text-align: center;
+}
 .audio-title {
+    display: inline-block;
+    position: relative;
     margin: 1vh 0;
-    font-size: calc(12px + .5vw + .5vh)
+    font-size: calc(12px + .5vw + .5vh);
+    
+    
+}
+.long-name {
+    animation: scroll-text 10s linear infinite;
 }
 
 #bigPlayPauseBtn {

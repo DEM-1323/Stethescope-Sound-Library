@@ -75,11 +75,21 @@ function loadAudioFiles(directory) {
         nameTrack.appendChild(audioName);
         listItem.appendChild(nameTrack);
         listItem.appendChild(timeCode);
+
         listItem.addEventListener("click", () => {
           const allLis = audioListElement.querySelectorAll("li");
+          const allNames = audioListElement.querySelectorAll(".audio-name");
           allLis.forEach((item) => item.classList.remove("selected"));
+          allNames.forEach((item) => item.classList.remove("long-name"));
 
           listItem.classList.add("selected");
+          const trackRect = nameTrack.getBoundingClientRect();
+          const nameRect = audioName.getBoundingClientRect();
+
+          if (nameRect.width > trackRect.width) {
+            audioName.classList.add("long-name");
+          }
+          console.log(trackRect.width, nameRect.width);
 
           playAudio(directory, file[0]);
         });
@@ -176,13 +186,37 @@ function seekAudio() {
 function playAudio(directory, file) {
   const safeDirectory = encodeURIComponent(directory);
   const safeFile = encodeURIComponent(file);
+
   const nowPlaying = document.getElementById("nowPlaying");
   nowPlaying.innerHTML = file;
+  const playingRect = nowPlaying.getBoundingClientRect();
+  const titleRect = document
+    .getElementById("audioTitle")
+    .getBoundingClientRect();
+  if (playingRect.width > titleRect.width) {
+    nowPlaying.classList.add("long-name");
+  } else {
+    nowPlaying.classList.remove("long-name");
+  }
+
   audio.src = `/audio/${safeDirectory}/${safeFile}`;
   audio.load(); // Load new audio file
   audio.play(); // Play new file
   isPlaying = true; // Update playing state
   updatePlayPauseButton();
+}
+
+function scrollName(file) {
+  const nameRect = file.getBoundingClientRect();
+  const trackRect = document
+    .getElementById("name-track")
+    .getBoundingClientRect();
+
+  if (nameRect.width > trackRect.width) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 setupAudioControls(); // Initialize audio controls once
