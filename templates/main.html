@@ -48,15 +48,22 @@
         <h3 class="playback-time">0:00 / 0:00</h3>
         <input type="range" id="seekSlider" value="0" class="seek-slider" />
         <div class="playBackCtrls">
-          <button id="prevBtn" class="skip-btn">
-            <i class="fa-solid fa-backward-step"></i>
-          </button>
-          <button id="playPauseBtn" class="play-pause-btn">
-            <i class="fa-solid fa-play"></i>
-          </button>
-          <button id="nextBtn" class="skip-btn">
-            <i class="fa-solid fa-forward-step"></i>
-          </button>
+          <div class="play-pause-skip">
+            <button id="prevBtn" class="skip-btn">
+              <i class="fa-solid fa-backward-step"></i>
+            </button>
+            <button id="playPauseBtn" class="play-pause-btn">
+              <i class="fa-solid fa-play"></i>
+            </button>
+            <button id="nextBtn" class="skip-btn">
+              <i class="fa-solid fa-forward-step"></i>
+            </button>
+          </div>
+          <div class="special-functions">
+            <button id="repeatBtn" class="function-btn">
+              <i class="fa-solid fa-repeat"></i>
+            </button>
+          </div>
         </div>
       </div>
       <footer class="App-Footer">
