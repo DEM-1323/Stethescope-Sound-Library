@@ -105,6 +105,7 @@ function loadAudioFiles(directory) {
 }
 let audio = new Audio(); // Global audio object
 let isPlaying = false; // Track if audio is playing
+let repeatAudio = false;
 
 // Setup global event listeners for audio controls
 function setupAudioControls() {
@@ -115,6 +116,7 @@ function setupAudioControls() {
     .getElementById("bigPlayPauseBtn")
     .addEventListener("click", togglePlayPause);
   document.getElementById("seekSlider").addEventListener("input", seekAudio);
+  document.getElementById("repeatBtn").addEventListener("click", repeatToggle);
 
   audio.addEventListener("timeupdate", function () {
     const seekSlider = document.getElementById("seekSlider");
@@ -216,6 +218,19 @@ function scrollName(file) {
     return true;
   } else {
     return false;
+  }
+}
+
+function repeatToggle() {
+  const repeatbtn = document.getElementById("repeatBtn");
+  if (!repeatAudio) {
+    repeatbtn.style.opacity = "1";
+    repeatAudio = true;
+    audio.loop = true;
+  } else {
+    repeatbtn.style.opacity = "0.5";
+    repeatAudio = false;
+    audio.loop = false;
   }
 }
 
