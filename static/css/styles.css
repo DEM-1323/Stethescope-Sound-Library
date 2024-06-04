@@ -108,12 +108,12 @@ h1, h2, h3, ul, li {
     flex-grow: 1;
 }
 
-#libraryList::after {
+.File-Select::before {
     content: '';
     position: absolute;
     top: 0;
     bottom: 0;
-    left: calc(100%); /* Adjust this depending on where you want the line */
+    left: calc(0%); /* Adjust this depending on where you want the line */
     width: 2px; /* Width of the line */
     background-color: #005A8B; /* Color of the line */
     z-index: 1;
@@ -229,6 +229,28 @@ ul {
     padding: 0;
     margin: 0;
     max-height: 200px;
+}
+
+ul::-webkit-scrollbar {
+    position: absolute;
+    width: calc(0.25vh + 0.5vw);
+}
+
+ul::-webkit-scrollbar-thumb {
+    background-color: #CCCCCC;
+    border-radius: 100vh;
+}
+ul::-webkit-scrollbar-track {
+    position: absolute;
+    right: -3em;
+    background: transparent;
+
+}
+ul::-webkit-scrollbar-track-piece:start {
+    background: transparent;
+}
+ul::-webkit-scrollbar-track-piece:end {
+    background: transparent;
 }
 
 ul li {
