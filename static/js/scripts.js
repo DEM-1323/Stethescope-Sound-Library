@@ -252,10 +252,11 @@ function playAudio(directory, file) {
   }
 
   audio.src = `/audio/${safeDirectory}/${safeFile}`;
-  audio.load(); // Load new audio file
-  audio.play(); // Play new file
-  isPlaying = true; // Update playing state
-  updatePlayPauseButton();
+  audio.addEventListener("loadeddata", () => {
+    audio.play();
+    isPlaying = true;
+    updatePlayPauseButton();
+  });
 }
 
 function scrollName(file) {
