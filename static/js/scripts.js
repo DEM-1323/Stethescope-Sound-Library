@@ -57,9 +57,11 @@ function loadAudioFiles(directory) {
         return; // Exit the function to prevent further execution
       }
 
-      files.forEach((file) => {
+      for (let i = 0; i < files.length; i++) {
+        let file = files[i];
         const listItem = document.createElement("li");
         listItem.classList.add("audio-item");
+        listItem.setAttribute("id", "audio-file-" + i);
 
         const nameTrack = document.createElement("div");
         nameTrack.classList.add("name-track");
@@ -95,7 +97,55 @@ function loadAudioFiles(directory) {
         });
 
         audioListElement.appendChild(listItem);
-      });
+        let currentIndex = i;
+        document.getElementById("prevBtn").addEventListener("click", () => {
+          let lastIndex = (currentIndex - 1 + files.length) % files.length;
+          file = files[lastIndex];
+          playAudio(directory, file[0]);
+
+          const allLis = audioListElement.querySelectorAll("li");
+          const allNames = audioListElement.querySelectorAll(".audio-name");
+          const currentItem = document.getElementById(
+            "audio-file-" + lastIndex
+          );
+          allLis.forEach((item) => item.classList.remove("selected"));
+          allNames.forEach((item) => item.classList.remove("long-name"));
+
+          currentItem.classList.add("selected");
+          const trackRect = nameTrack.getBoundingClientRect();
+          const nameRect = audioName.getBoundingClientRect();
+
+          if (nameRect.width > trackRect.width) {
+            audioName.classList.add("long-name");
+          }
+
+          currentIndex = lastIndex;
+        });
+        document.getElementById("nextBtn").addEventListener("click", () => {
+          let nextIndex = (currentIndex + 1) % files.length;
+          file = files[nextIndex];
+          playAudio(directory, file[0]);
+
+          const allLis = audioListElement.querySelectorAll("li");
+          const allNames = audioListElement.querySelectorAll(".audio-name");
+          const currentItem = document.getElementById(
+            "audio-file-" + nextIndex
+          );
+          allLis.forEach((item) => item.classList.remove("selected"));
+          allNames.forEach((item) => item.classList.remove("long-name"));
+
+          currentItem.classList.add("selected");
+          const trackRect = nameTrack.getBoundingClientRect();
+          const nameRect = audioName.getBoundingClientRect();
+
+          if (nameRect.width > trackRect.width) {
+            audioName.classList.add("long-name");
+          }
+
+          currentIndex = nextIndex;
+        });
+      }
+
       fileSelectElement.classList.add("files");
     })
     .catch((error) => {
