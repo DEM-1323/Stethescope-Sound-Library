@@ -54,20 +54,13 @@ h1, h2, h3, ul, li {
     height: 6vh; min-height: 50px; max-height: 75px;
     
 }
-/*.App{
-    width: 834px; height:1134px;
-    background-color: white;
-    text-align: center;
-    place-items: center;
-    border: 10px dashed;
-}*/
+
 
 .App-Title {
     display: flex;
     flex: 0 1 calc(25px + 8vh);
     color:#005A8B;
     width: 100%;
-    border: 2px dashed;
     justify-content: center;
     align-items: center;
     margin-top: calc(10px + .5vh);
@@ -84,7 +77,6 @@ h1, h2, h3, ul, li {
     width: 80%;
     min-height: 100px;
     max-height: 250px;
-    border: 2px solid;
     border-radius: 13px;
     overflow-y: hidden;
     margin-top: calc(17px + .5vh);
@@ -265,7 +257,6 @@ li.selected:hover {
     flex-direction: column;
     border-radius: 13px;
     width: 80%;
-    border: 2px dashed;
     justify-content: center;
     align-items: center;
     margin: calc(10px + 5vh) 0;
