@@ -231,28 +231,6 @@ ul {
     max-height: 200px;
 }
 
-ul::-webkit-scrollbar {
-    position: absolute;
-    width: calc(0.25vh + 0.5vw);
-}
-
-ul::-webkit-scrollbar-thumb {
-    background-color: #CCCCCC;
-    border-radius: 100vh;
-}
-ul::-webkit-scrollbar-track {
-    position: absolute;
-    right: -3em;
-    background: transparent;
-
-}
-ul::-webkit-scrollbar-track-piece:start {
-    background: transparent;
-}
-ul::-webkit-scrollbar-track-piece:end {
-    background: transparent;
-}
-
 ul li {
     padding: .75vh 1.75vh;
     font-size: calc(8px + .5vw + .5vh);
