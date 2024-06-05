@@ -247,6 +247,10 @@ li.selected:first-child {
     border-top: none;
 }
 
+li.selected:last-child {
+    border-bottom: none;
+}
+
 li.selected:hover {
     background-color: #FEDE42;
 }
