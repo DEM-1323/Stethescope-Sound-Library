@@ -5,7 +5,12 @@ document.addEventListener("DOMContentLoaded", function () {
 // This function fetches the list of directories from the Flask server
 function loadLibraries() {
   fetch("/directories")
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
     .then((directories) => {
       const libraryListElement = document.getElementById("libraryList");
       libraryListElement.innerHTML = ""; // Clear the list first
@@ -35,7 +40,16 @@ function loadLibraries() {
 // This function fetches the list of audio files from the selected directory
 function loadAudioFiles(directory) {
   fetch(`/files/${encodeURIComponent(directory)}`)
-    .then((response) => response.json())
+    .then((response) => {
+      const contentType = response.headers.get("content-type");
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new TypeError("Received non-JSON response");
+      }
+      return response.json();
+    })
     .then((files) => {
       if (!Array.isArray(files)) {
         console.error("Unexpected response:", files);
