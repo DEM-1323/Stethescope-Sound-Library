@@ -30,7 +30,7 @@ h1, h2, h3, ul, li {
   height: 100%; /* Use the full height of the viewport */
   width: 100%;
   max-width: 1024px;
-  margin: auto;
+  margin: 0 auto;
   background-color: #fff;
   overflow: hidden;
 }
@@ -78,7 +78,7 @@ h1, h2, h3, ul, li {
     min-height: 100px;
     max-height: 250px;
     border-radius: calc(1vh + 5px);
-    overflow-y: hidden;
+    overflow: hidden;
     margin-top: calc(17px + .5vh);
     box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, 0.2);
     background-color: white;
@@ -418,7 +418,6 @@ li.selected:hover {
         background-color: #fff;
     }
     .App {
-        margin: auto; /* This will center the max-width container */
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: add shadow for better focus */
       }
       .Library-Select {
@@ -435,7 +434,6 @@ li.selected:hover {
     }
     .App {
       max-width: 900px; /* Set a max-width if you want to restrict the app size */
-      margin: auto; /* This will center the max-width container */
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: add shadow for better focus */
     }
     .App-Header {

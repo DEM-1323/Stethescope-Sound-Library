@@ -1,29 +1,60 @@
-.audio-player {
-    width: 300px;
-    height: 100px;
+* {
+    box-sizing: border-box;
+}
+
+/* Styling for iPads first and then larger screens */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
     background-color: #005A8B;
-    color: white;
+}
+
+/* App Font Styles */
+h1, h2, h3, ul, li {
+    font-family: 'DM Serif Text', serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* App Container Flex Box */
+.App {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: column; /* Each app section is a separate row */
+    align-items: center; /* Horizontal center alignment for all sections */
+    margin: 0 auto;
+    height: 100%; /* Fill the entire height of the viewport */
+    background-color: #fff;
+}
+
+.App-Header, .App-Footer {
+    display: flex;
     justify-content: center;
-    padding: 20px;
-    border-radius: 10px;
+    align-items: center;
+    z-index: 10;
+    padding: 2% 0;
+    height: 10%;
+    width: 100%;
+    background-color: #005A8B;
 }
 
-.audio-title {
-    margin: 10px 0;
+/* Header an Logo styles */
+.App-Header {
+    box-shadow: 0px 2px 8px 3px rgba(0, 0, 0, 0.2);
 }
 
-.play-pause-btn, .skip-btn {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
+.logo {
+    height: clamp(6vh, 75px, 8vh);
 }
 
-.seek-slider {
-    width: 90%;
-    cursor: pointer;
+#Title {
+    text-align: center;
+    font-size: calc(2vh + 2vw);
+    color:#005A8B;
+    
 }
+.App-Footer{
+    margin-top: auto;
+}
+
