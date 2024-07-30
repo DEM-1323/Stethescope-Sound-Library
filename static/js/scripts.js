@@ -37,7 +37,7 @@ function loadLibraries() {
     });
 }
 
-// This function fetches the list of audio files from the selected directory
+// This function fetches the list of audio files from the selected directory and handles all audio playback and loading events
 function loadAudioFiles(directory) {
   fetch(`/files/${encodeURIComponent(directory)}`)
     .then((response) => {
@@ -108,57 +108,29 @@ function loadAudioFiles(directory) {
           console.log(trackRect.width, nameRect.width);
 
           playAudio(directory, file[0]);
+          updateTrackIndex(i);
         });
-
         audioListElement.appendChild(listItem);
-        let currentIndex = i;
-        document.getElementById("prevBtn").addEventListener("click", () => {
-          let lastIndex = (currentIndex - 1 + files.length) % files.length;
-          file = files[lastIndex];
-          playAudio(directory, file[0]);
-
-          const allLis = audioListElement.querySelectorAll("li");
-          const allNames = audioListElement.querySelectorAll(".audio-name");
-          const currentItem = document.getElementById(
-            "audio-file-" + lastIndex
-          );
-          allLis.forEach((item) => item.classList.remove("selected"));
-          allNames.forEach((item) => item.classList.remove("long-name"));
-
-          currentItem.classList.add("selected");
-          const trackRect = nameTrack.getBoundingClientRect();
-          const nameRect = audioName.getBoundingClientRect();
-
-          if (nameRect.width > trackRect.width) {
-            audioName.classList.add("long-name");
-          }
-
-          currentIndex = lastIndex;
-        });
-        document.getElementById("nextBtn").addEventListener("click", () => {
-          let nextIndex = (currentIndex + 1) % files.length;
-          file = files[nextIndex];
-          playAudio(directory, file[0]);
-
-          const allLis = audioListElement.querySelectorAll("li");
-          const allNames = audioListElement.querySelectorAll(".audio-name");
-          const currentItem = document.getElementById(
-            "audio-file-" + nextIndex
-          );
-          allLis.forEach((item) => item.classList.remove("selected"));
-          allNames.forEach((item) => item.classList.remove("long-name"));
-
-          currentItem.classList.add("selected");
-          const trackRect = nameTrack.getBoundingClientRect();
-          const nameRect = audioName.getBoundingClientRect();
-
-          if (nameRect.width > trackRect.width) {
-            audioName.classList.add("long-name");
-          }
-
-          currentIndex = nextIndex;
-        });
       }
+
+      // Event listener for previous audio track button
+      document.getElementById("prevBtn").addEventListener("click", () => {
+        console.log(currentIndex);
+        let lastIndex = (currentIndex - 1 + files.length) % files.length;
+        file = files[lastIndex];
+        playAudio(directory, file[0]);
+        updateTrackIndex(lastIndex);
+      });
+
+      // Event listener for next audio track button
+      document.getElementById("nextBtn").addEventListener("click", () => {
+        console.log(currentIndex);
+        let nextIndex = (currentIndex + 1) % files.length;
+        file = files[nextIndex];
+        playAudio(directory, file[0]);
+
+        updateTrackIndex(nextIndex);
+      });
 
       fileSelectElement.classList.add("files");
     })
@@ -170,6 +142,7 @@ function loadAudioFiles(directory) {
 let audio = new Audio(); // Global audio object
 let isPlaying = false; // Track if audio is playing
 let repeatAudio = false;
+let currentIndex = -1; // Intialize the index for the audio file list
 
 // Setup global event listeners for audio controls
 function setupAudioControls() {
@@ -204,6 +177,31 @@ function togglePlayPause() {
     isPlaying = false;
   }
   updatePlayPauseButton();
+}
+// Update which Track is currently selected using index number for foward and backwards buttons
+function updateTrackIndex(index) {
+  const audioListElement = document.getElementById("audioList");
+  const allLis = audioListElement.querySelectorAll("li");
+  const allNames = audioListElement.querySelectorAll(".audio-name");
+  allLis.forEach((item) => item.classList.remove("selected"));
+  allNames.forEach((item) => item.classList.remove("long-name"));
+
+  const currentItem = document.getElementById("audio-file-" + index);
+  currentItem.classList.add("selected");
+
+  const nameTrack = currentItem.querySelector(".name-track");
+  const audioName = currentItem.querySelector(".audio-name");
+
+  const trackRect = nameTrack.getBoundingClientRect();
+  const nameRect = audioName.getBoundingClientRect();
+
+  if (nameRect.width > trackRect.width) {
+    audioName.classList.add("long-name");
+  } else {
+    audioName.classList.remove("long-name");
+  }
+
+  currentIndex = index; // Update the current index
 }
 
 function updatePlaybackTime() {
