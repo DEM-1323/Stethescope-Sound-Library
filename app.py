@@ -35,7 +35,7 @@ def list_files(directory):
 
     # List all audio files in the directory
     try:
-        files = os.listdir(directory_path)
+        files = sorted(os.listdir(directory_path))
         audio_files = []
         for f in files:
             if f.endswith(('.mp3', '.wav', '.aac')):
