@@ -76,7 +76,7 @@ h1, h2, h3, ul, li {
     font-size: calc(2vh + 2vw);
 }
 
-.Library-Select{
+.Audio-Library{
     display: flex;
     flex: 0 1 auto;
     height: 30%;
@@ -90,7 +90,7 @@ h1, h2, h3, ul, li {
     background-color: white;
 }
 
-.Library-Select h3 {
+.Audio-Library h3 {
     margin-top: 0;
     margin-bottom: 0;
     padding: .75vh 1vh;
@@ -99,10 +99,10 @@ h1, h2, h3, ul, li {
     border-bottom: solid #78AFE9;
 }
 
-.sidebar, .File-Select {
+.Library-Select, .File-Select {
     color: white;
 }
-.sidebar {
+.Library-Select {
     display: flex;
     flex-direction: column;
     flex: 1.25;
@@ -125,7 +125,7 @@ h1, h2, h3, ul, li {
     z-index: 1;
 }
 
-.sidebar li:hover {
+.Library-Select li:hover {
     background-color: #CCCCCC;
     cursor: pointer;
 }
@@ -426,7 +426,7 @@ li.selected:hover {
     .App {
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: add shadow for better focus */
       }
-      .Library-Select {
+      .Audio-Library {
         max-height: 250px
     }
       .Audio-Player {
@@ -451,10 +451,10 @@ li.selected:hover {
     #Title {
         font-size: calc(10px + 1vh + 1vw);
     }
-    .Library-Select {
+    .Audio-Library {
         max-height: 250px
     }
-    .Library-Select h3 {
+    .Audio-Library h3 {
         font-size: calc(10px + .25vw + .5vh);
     }
     h3 {
