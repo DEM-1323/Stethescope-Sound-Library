@@ -45,7 +45,7 @@ h1, h2, h3, ul, li {
 /* Header and Logo styles */
 .App-Header {
     flex-direction: column; /* Stack logo and department title */
-    padding: 8% 0;
+    padding: 6vh 0;
     box-shadow: 0px 2px 8px 3px rgba(0, 0, 0, 0.2); /* Adds depth */
 }
 
@@ -74,14 +74,62 @@ h1, h2, h3, ul, li {
     flex: 0 1 auto;
     height: clamp(calc(2vh + 100px), 30%, calc(2vh + 250px));
     width: 80%;
+    overflow: hidden; /* cuts any overflow in the container */
     border-radius: calc(1vh + 5px);
     box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, 0.2);
+    background-color: white;
+}
+
+.Audio-Library h3 {
+    margin: 0;
+    padding: 0.75vh 1vh;
+    font-size: 2rem;
+    border-bottom: solid #78AFE9;
+    background-color: #005A8B;
+}
+
+.Library-Select, .File-Select {
+    flex-direction: column;
+    position: relative;
+}
+
+#libraryList, #audioList {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.Library-Select li:hover, .audio-item:hover {
+    background-color: #CCCCCC;
+    cursor: pointer;
+}
+
+/* Library Selection Styles */
+.Library-Select {
+    flex: 40%;
+}
+
+
+
+/* File Selection Styles */
+.File-Select {
+    flex: 60%;
+}
+
+.File-Select::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(0%);
+    z-index: 10; /* Adjust this depending on where you want the line */
+    width: 0.25rem; /* Width of the line */
+    content: '';
+    background-color: #005A8B; /* Color of the line */
 }
 
 /* Footer styles */
 .App-Footer {
     margin-top: auto; /* Pushes footer to bottom of App container */
-    padding: 5% 0;
+    padding: 4vh 0;
 }
 
 #Footer-text {
