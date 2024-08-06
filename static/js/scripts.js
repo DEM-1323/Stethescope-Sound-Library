@@ -64,7 +64,7 @@ function loadAudioFiles(directory) {
         console.error("No files found or the files array is empty.");
         fileSelectElement.classList.remove("files");
         const listItem = document.createElement("li");
-        listItem.classList.add("audio-item.empty");
+        listItem.classList.add("Audio-Item.empty");
         listItem.textContent = "No audio files available in this directory.";
         audioListElement.appendChild(listItem);
         //alert("No audio files available in this directory.");
@@ -74,7 +74,7 @@ function loadAudioFiles(directory) {
       for (let i = 0; i < files.length; i++) {
         let file = files[i];
         const listItem = document.createElement("li");
-        listItem.classList.add("audio-item");
+        listItem.classList.add("Audio-Item");
         listItem.setAttribute("id", "audio-file-" + i);
 
         const nameTrack = document.createElement("div");

@@ -49,7 +49,7 @@ h1, h2, h3, ul, li {
     box-shadow: 0px 2px 8px 3px rgba(0, 0, 0, 0.2); /* Adds depth */
 }
 
-.logo {
+.Logo {
     height: clamp(3vh, 50px, 6vh);
 }
 
@@ -98,17 +98,10 @@ h1, h2, h3, ul, li {
     overflow-y: auto;
 }
 
-.Library-Select li:hover, .audio-item:hover {
-    background-color: #CCCCCC;
-    cursor: pointer;
-}
-
 /* Library Selection Styles */
 .Library-Select {
     flex: 40%;
 }
-
-
 
 /* File Selection Styles */
 .File-Select {
@@ -121,12 +114,248 @@ h1, h2, h3, ul, li {
     bottom: 0;
     left: calc(0%);
     z-index: 10; /* Adjust this depending on where you want the line */
-    width: 0.25rem; /* Width of the line */
+    width: 0.2rem; /* Width of the line */
     content: '';
     background-color: #005A8B; /* Color of the line */
 }
 
-/* Footer styles */
+.File-Select.files::after {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(75%); /* Adjust this depending on where you want the line */
+    z-index: 1;
+    width: 0.2rem; /* Width of the line */
+    content: '';
+    background-color: #005A8B; /* Color of the line */
+}
+
+/* List Styles for Audio Library */
+.Library-Select li:hover, .audio-item:hover {
+    background-color: #CCCCCC;
+    cursor: pointer;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    max-height: 205px;
+    list-style: none;
+}
+
+ul li {
+    padding: .75vh 1.75vh;
+    font-size: calc(8px + .5vw + .5vh);
+    color: #005A8B;
+}
+
+li.selected {
+    border-top: solid #005A8B; 
+    border-bottom: solid #005A8B; 
+    box-shadow: inset 0px -1px 2px 1px rgba(0, 0, 0, 0.2);
+    background-color: #FEDE42;
+    color: #132245;
+}
+li.selected:first-child {
+    border-top: none;
+}
+
+li.selected:last-child {
+    border-bottom: none;
+}
+
+li.selected:hover {
+    background-color: #FEDE42;
+}
+
+/* Audio Item Styles */
+.Audio-Item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .75vh 0;
+    cursor: pointer;
+}
+
+.Audio-Item.empty {
+    padding-left: 1.75vh;
+}
+
+.Audio-Item.empty:hover {
+    background-color: transparent !important;
+}
+
+.audio-name {
+    display: inline-block;
+    position: relative;
+    min-width: 100%;
+    color: #005A8B;
+}
+
+.long-name, .audio-name:hover {
+    animation: scroll-text 10s linear infinite;
+}
+
+.name-track {
+    flex: 1;
+    position: relative;
+    padding-left: 1.75vh;
+    max-width: 78%;
+    overflow: hidden;
+    text-overflow: clip;
+    white-space: nowrap;
+}
+
+.time-code {
+    flex: 1;
+    max-width: 21%;
+    text-align: center;
+    font-size: calc(4px + .5vw + .5vh);
+    color: #005A8B;
+}
+
+/* Audio Player Styles */
+.Audio-Player {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: calc(10px + 5vh) 0;
+    padding: 20px;
+    width: 80%;
+    border-radius: calc(1vh + 5px);
+    box-shadow: 2px 2px 6px 3px rgba(0, 0, 0, 0.2);
+    background-color: #005A8B;
+    color: white;
+}
+
+.title-track {
+    position: relative;
+    width: 70%;
+    overflow: hidden;
+    text-overflow: clip;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.audio-title {
+    display: inline-block;
+    position: relative;
+    margin: 1vh 0;
+    font-size: calc(12px + .5vw + .5vh);
+}
+
+/* Playback Controls Styles */
+#bigPlayPauseBtn {
+    margin: auto 0;
+    font-size: 15vh;
+}
+
+.playback-time {
+    margin: 0.5vh 0.5vh 0.5vh 0;
+    width: 90%;
+    text-align: right;
+}
+
+.seek-slider {
+    margin:0;
+    padding: 0;
+    width: 90%;    
+    border-radius: 100vh;
+    appearance: none;
+    cursor: pointer;
+    background: white;
+    
+}
+
+.seek-slider::-webkit-slider-thumb {
+    margin-top: -.75vh;
+    border: solid 4px #78AFE9;
+    height: 3vh; /* Height of the thumb */
+    width: 3vh; /* Width of the thumb */
+    -webkit-appearance: none; /* Required for WebKit browsers */
+    appearance: none;
+    cursor: pointer; /* Cursor on hover */
+    border-radius: 50%; /* Makes it circular */
+    background: #005A8B; /* Thumb background color */
+}
+
+/* Styles the slider track for WebKit browsers */
+.seek-slider::-webkit-slider-runnable-track {
+    height: 1.5vh;
+    width: 100%;
+}
+.seek-slider::-moz-range-thumb {
+    margin-top: -.75vh;
+    border: solid 4px #78AFE9;
+    height: 3vh; /* Height of the thumb */
+    width: 3vh; /* Width of the thumb */
+    -webkit-appearance: none; /* Required for WebKit browsers */
+    appearance: none;
+    cursor: pointer; /* Cursor on hover */
+    border-radius: 50%; /* Makes it circular */
+    background: #005A8B; /* Thumb background color */
+}
+
+/* Styles the slider track for WebKit browsers */
+.seek-slider::-moz-range-track {
+    height: 1.5vh;
+    width: 100%;
+}
+
+/* Optional: style for hover effect on the slider */
+.seek-slider:hover {
+    opacity: 1; /* Full opacity on hover */
+}
+
+.playBackCtrls {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+    margin: 2vh 0 3vh 0;
+    width: 90%;
+}
+.play-pause-skip {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.play-pause-btn, .skip-btn {
+    border: none;
+    padding: 0 1vw;
+    cursor: pointer;
+    font-size: 3vh;
+    background: none;
+    color: white;
+}
+
+.special-functions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 5% 0 auto;
+}
+
+.function-btn {
+    border: none;
+    padding: 0 1vw;
+    cursor: pointer;
+    font-size: 2.5vh;
+    color: white;
+    background: none;
+}
+
+#repeatBtn {
+    opacity: 0.5;
+}
+
+/* Footer Styles */
 .App-Footer {
     margin-top: auto; /* Pushes footer to bottom of App container */
     padding: 4vh 0;
@@ -136,3 +365,12 @@ h1, h2, h3, ul, li {
     font-size: calc(1.5rem);
 }
 
+/* Animations */
+@keyframes scroll-text {
+    0%, 100% { 
+        transform: translateX(0); 
+    }
+    50% { 
+        transform: translateX(calc(-100% + 100px)); /* Adjust 100px to ensure it bounces back before the text fully exits the view */
+    }
+}

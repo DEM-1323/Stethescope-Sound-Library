@@ -1,240 +1,146 @@
-*{
-  box-sizing: border-box;
+* {
+    box-sizing: border-box;
 }
 
-/* Use a mobile-first approach: style for mobile first, then larger screens */
-html,
-body {
-  justify-content: center;
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  font-family: 'Arial', sans-serif; /* Your preferred font */
-  background-color: #005A8B;
-  overflow: hidden;
+/* Styling for iPads first and then larger screens */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #005A8B;
+    font-size: calc(0.5vh + 0.5vw);
 }
 
+/* App Font Styles */
 h1, h2, h3, ul, li {
     font-family: 'DM Serif Text', serif;
     font-weight: 400;
     font-style: normal;
+    color: white;
 }
 
-
-/* Make your app container fill the available height and center its content */
+/* App Container Flex Box */
 .App {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start; /* Vertical centering */
-  align-items: center; /* Horizontal centering */
-  height: 100%; /* Use the full height of the viewport */
-  width: 100%;
-  max-width: 1024px;
-  margin: 0 auto;
-  background-color: #fff;
-  overflow: hidden;
+    display: flex;
+    flex-direction: column; /* Each app section is a separate row */
+    align-items: center; /* Horizontal center alignment for all sections */
+    gap: 2vh; /* Vertical gap between sections */
+    margin: 0 auto;
+    height: 100%; /* Fill the entire height of the viewport */
+    background-color: #fff;
 }
 
-.App-Header {
+/* Header and Footer styles */ 
+.App-Header, .App-Footer {
     display: flex;
-    flex-direction: column;
-    background-color: #005A8B;
     justify-content: center;
     align-items: center;
-    position: relative;
     z-index: 10;
+    height: clamp(4vh, 5%, 6vh); /* Clamped height for multiple device screen heights */
     width: 100%;
-    margin-bottom: auto;
-    height: 80px;
-    padding: 6vh 0;
-    box-shadow: 0px 2px 8px 3px rgba(0, 0, 0, 0.2);
-    color: white;
-    
+    background-color: #005A8B;
 }
 
-.logo{
-    width: auto; min-width: 132px;
-    height: 6vh; min-height: 50px; max-height: 75px;
-    
+/* Header and Logo styles */
+.App-Header {
+    flex-direction: column; /* Stack logo and department title */
+    padding: 6vh 0;
+    box-shadow: 0px 2px 8px 3px rgba(0, 0, 0, 0.2); /* Adds depth */
+}
+
+.Logo {
+    height: clamp(3vh, 50px, 6vh);
 }
 
 #Department-Title {
-    margin: 10px 0 0 0;
+    margin: 1vh 0 0;
+    font-size: 3rem;
 }
 
-.App-Title {
-    display: flex;
-    flex: 0 1 calc(25px + 8vh);
-    color:#005A8B;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-    margin-top: calc(10px + .5vh);
-}
-
+/* App Title styles */
 #Title {
-    font-size: calc(2vh + 2vw);
+    text-align: center;
+    font-size: 4rem;
+    color:#005A8B;
 }
 
-.Audio-Library{
+/*Audio Library styles */
+.Audio-Library, .Library-Select, .File-Select {
     display: flex;
+}
+
+.Audio-Library {
     flex: 0 1 auto;
-    height: 30%;
+    height: clamp(calc(2vh + 150px), 30%, calc(5vh + 250px));
     width: 80%;
-    min-height: 100px;
-    max-height: 250px;
+    overflow: hidden; /* cuts any overflow in the container */
     border-radius: calc(1vh + 5px);
-    overflow: hidden;
-    margin-top: calc(17px + .5vh);
     box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, 0.2);
     background-color: white;
 }
 
 .Audio-Library h3 {
-    margin-top: 0;
-    margin-bottom: 0;
-    padding: .75vh 1vh;
-    font-size: calc(10px + .5vw + .5vh);
-    background-color: #005A8B;
+    margin: 0;
+    padding: 0.75vh 1vh;
+    font-size: 2rem;
     border-bottom: solid #78AFE9;
+    background-color: #005A8B;
 }
 
 .Library-Select, .File-Select {
-    color: white;
-}
-.Library-Select {
-    display: flex;
     flex-direction: column;
-    flex: 1.25;
     position: relative;
 }
 
-#libraryList {
-    overflow-y: auto;
+#libraryList, #audioList {
     flex-grow: 1;
+    overflow-y: auto;
+}
+
+/* Library Selection Styles */
+.Library-Select {
+    flex: 40%;
+}
+
+/* File Selection Styles */
+.File-Select {
+    flex: 60%;
 }
 
 .File-Select::before {
-    content: '';
     position: absolute;
     top: 0;
     bottom: 0;
-    left: calc(0%); /* Adjust this depending on where you want the line */
-    width: 2px; /* Width of the line */
+    left: calc(0%);
+    z-index: 10; /* Adjust this depending on where you want the line */
+    width: 0.2rem; /* Width of the line */
+    content: '';
     background-color: #005A8B; /* Color of the line */
-    z-index: 1;
-}
-
-.Library-Select li:hover {
-    background-color: #CCCCCC;
-    cursor: pointer;
-}
-
-.audio-item:hover {
-    background-color: #CCCCCC;
-    cursor: pointer;
-}
-
-.File-Select {
-    display: flex;
-    flex-direction: column;
-    flex: 1.75;
-    position: relative;
-}
-
-#audioList {
-    overflow-y: auto;
-    flex-grow: 1;
-}
-
-.audio-list {
-    position: relative;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    
-}
-
-.audio-item {
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: .75vh 0;
-}
-
-.audio-item.empty {
-    padding-left: 1.75vh;
-}
-.audio-item.empty:hover {
-    background-color: transparent !important;
-}
-
-.audio-name {
-    position: relative;
-    display: inline-block;
-    color: #005A8B;
-    min-width: 100%;
-    
-}
-.name-track {
-    flex: 1;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: clip;
-    position: relative;
-    max-width: 78%;
-    padding-left: 1.75vh;
-}
-
-@keyframes scroll-text {
-    0%, 100% { 
-        transform: translateX(0); 
-    }
-    50% { 
-        transform: translateX(calc(-100% + 100px)); /* Adjust 100px to ensure it bounces back before the text fully exits the view */
-    }
-}
-
-.audio-name.long-name {
-    animation: scroll-text 10s linear infinite;
-}
-.audio-name:hover {
-    /* Apply the scrolling animation on hover */
-    animation: scroll-text 10s linear infinite;
-}
-
-
-.time-code {
-    flex: 1;
-    color: #005A8B;
-    font-size: calc(4px + .5vw + .5vh);
-    max-width: 21%;
-    text-align: center;
 }
 
 .File-Select.files::after {
-    content: '';
     position: absolute;
     top: 0;
     bottom: 0;
     left: calc(75%); /* Adjust this depending on where you want the line */
-    width: 2px; /* Width of the line */
-    background-color: #005A8B; /* Color of the line */
     z-index: 1;
+    width: 0.2rem; /* Width of the line */
+    content: '';
+    background-color: #005A8B; /* Color of the line */
 }
 
-h3 {
-    color: white;
-    font-size: calc(5px + .5vw + .5vh);
+/* List Styles for Audio Library */
+.Library-Select li:hover, .audio-item:hover {
+    background-color: #CCCCCC;
+    cursor: pointer;
 }
 
 ul {
-    list-style: none;
-    padding: 0;
     margin: 0;
-    max-height: 205px;
+    padding: 0;
+    height: clamp(0.5vh, 1vh, 100%);
+    list-style: none;
 }
 
 ul li {
@@ -244,10 +150,11 @@ ul li {
 }
 
 li.selected {
-    color: #132245;
-    background-color: #FEDE42;
-    border-top: solid #005A8B; border-bottom: solid #005A8B; 
+    border-top: solid #005A8B; 
+    border-bottom: solid #005A8B; 
     box-shadow: inset 0px -1px 2px 1px rgba(0, 0, 0, 0.2);
+    background-color: #FEDE42;
+    color: #132245;
 }
 li.selected:first-child {
     border-top: none;
@@ -255,50 +162,95 @@ li.selected:first-child {
 
 li.selected:last-child {
     border-bottom: none;
+    box-shadow: none;
 }
 
 li.selected:hover {
     background-color: #FEDE42;
 }
-/* audio player styles */
-.Audio-Player {
-    flex: 0 1 calc(100px + 35vh);
+
+/* Audio Item Styles */
+.Audio-Item {
     display: flex;
-    flex-direction: column;
-    border-radius: calc(1vh + 5px);
-    width: 80%;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    margin: calc(10px + 5vh) 0;
-    padding: 20px;
-    color: white;
-    box-shadow: 2px 2px 6px 3px rgba(0, 0, 0, 0.2);
-    background-color: #005A8B;
+    padding: .75vh 0;
+    cursor: pointer;
 }
 
-.title-track{
+.Audio-Item.empty {
+    padding-left: 1.75vh;
+}
+
+.Audio-Item.empty:hover {
+    background-color: transparent !important;
+}
+
+.audio-name {
+    display: inline-block;
+    position: relative;
+    min-width: 100%;
+    color: #005A8B;
+}
+
+.long-name, .audio-name:hover {
+    animation: scroll-text 10s linear infinite;
+}
+
+.name-track {
+    flex: 1;
+    position: relative;
+    padding-left: 1.75vh;
+    max-width: 78%;
     overflow: hidden;
-    white-space: nowrap;
     text-overflow: clip;
+    white-space: nowrap;
+}
+
+.time-code {
+    flex: 1;
+    max-width: 21%;
+    text-align: center;
+    font-size: calc(4px + .5vw + .5vh);
+    color: #005A8B;
+}
+
+/* Audio Player Styles */
+.Audio-Player {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 3vh 0;
+    padding: 20px;
+    height: clamp(calc(2vh + 200px), 40%, calc(10vh + 500px));
+    width: 80%;
+    border-radius: calc(1vh + 5px);
+    box-shadow: 2px 2px 6px 3px rgba(0, 0, 0, 0.2);
+    background-color: #005A8B;
+    color: white;
+}
+
+.title-track {
     position: relative;
     width: 70%;
+    overflow: hidden;
+    text-overflow: clip;
+    white-space: nowrap;
     text-align: center;
 }
+
 .audio-title {
     display: inline-block;
     position: relative;
     margin: 1vh 0;
     font-size: calc(12px + .5vw + .5vh);
-    
-    
-}
-.long-name {
-    animation: scroll-text 10s linear infinite;
 }
 
+/* Playback Controls Styles */
 #bigPlayPauseBtn {
-    font-size: 15vh;
     margin: auto 0;
+    font-size: 15vh;
 }
 
 .playback-time {
@@ -308,48 +260,49 @@ li.selected:hover {
 }
 
 .seek-slider {
+    margin:0;
+    padding: 0;
+    width: 90%;    
+    border-radius: 100vh;
     appearance: none;
-    width: 90%;
     cursor: pointer;
     background: white;
-    border-radius: 100vh;
-    padding: 0;
-    margin:0;
+    
 }
 
 .seek-slider::-webkit-slider-thumb {
+    margin-top: -.75vh;
+    border: solid 4px #78AFE9;
+    height: 3vh; /* Height of the thumb */
+    width: 3vh; /* Width of the thumb */
     -webkit-appearance: none; /* Required for WebKit browsers */
     appearance: none;
-    width: 3vh; /* Width of the thumb */
-    height: 3vh; /* Height of the thumb */
-    margin-top: -.75vh;
-    background: #005A8B; /* Thumb background color */
     cursor: pointer; /* Cursor on hover */
-    border: solid 4px #78AFE9;
     border-radius: 50%; /* Makes it circular */
+    background: #005A8B; /* Thumb background color */
 }
 
 /* Styles the slider track for WebKit browsers */
 .seek-slider::-webkit-slider-runnable-track {
-    width: 100%;
     height: 1.5vh;
+    width: 100%;
 }
 .seek-slider::-moz-range-thumb {
+    margin-top: -.75vh;
+    border: solid 4px #78AFE9;
+    height: 3vh; /* Height of the thumb */
+    width: 3vh; /* Width of the thumb */
     -webkit-appearance: none; /* Required for WebKit browsers */
     appearance: none;
-    width: 3vh; /* Width of the thumb */
-    height: 3vh; /* Height of the thumb */
-    margin-top: -.75vh;
-    background: #005A8B; /* Thumb background color */
     cursor: pointer; /* Cursor on hover */
-    border: solid 4px #78AFE9;
     border-radius: 50%; /* Makes it circular */
+    background: #005A8B; /* Thumb background color */
 }
 
 /* Styles the slider track for WebKit browsers */
 .seek-slider::-moz-range-track {
-    width: 100%;
     height: 1.5vh;
+    width: 100%;
 }
 
 /* Optional: style for hover effect on the slider */
@@ -358,11 +311,11 @@ li.selected:hover {
 }
 
 .playBackCtrls {
-    margin: 2vh 0 3vh 0;
     display: flex;
     flex-direction: row;
     align-items: center;
     position: relative;
+    margin: 2vh 0 3vh 0;
     width: 90%;
 }
 .play-pause-skip {
@@ -376,12 +329,12 @@ li.selected:hover {
 }
 
 .play-pause-btn, .skip-btn {
-    background: none;
     border: none;
-    color: white;
+    padding: 0 1vw;
     cursor: pointer;
     font-size: 3vh;
-    padding: 0 1vw;
+    background: none;
+    color: white;
 }
 
 .special-functions {
@@ -392,33 +345,39 @@ li.selected:hover {
 }
 
 .function-btn {
-    background: none;
     border: none;
-    color: white;
+    padding: 0 1vw;
     cursor: pointer;
     font-size: 2.5vh;
-    padding: 0 1vw;
+    color: white;
+    background: none;
 }
 
 #repeatBtn {
     opacity: 0.5;
 }
 
-
-
+/* Footer Styles */
 .App-Footer {
-    display: flex;
-    background-color: #005A8B;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    z-index: 10;
-    width: 100%;
+    margin-top: auto; /* Pushes footer to bottom of App container */
     padding: 4vh 0;
-    height: 80px;
-    margin-top: auto;
 }
- 
+
+#Footer-text {
+    font-size: calc(1.5rem);
+}
+
+/* Animations */
+@keyframes scroll-text {
+    0%, 100% { 
+        transform: translateX(0); 
+    }
+    50% { 
+        transform: translateX(calc(-100% + 100px)); /* Adjust 100px to ensure it bounces back before the text fully exits the view */
+    }
+}
+
+/* Media Queries */
 @media (min-width: 820px) and (max-width:1024px) {
     html, body {
         background-color: #fff;
@@ -464,10 +423,10 @@ li.selected:hover {
         padding: .5vh 2vh;
         font-size: calc(8px + .25vw + .5vh);
     }
-    .audio-item {
+    .Audio-Item {
         padding: .5vh 0;
     }
-    .audio-item.empty {
+    .Audio-Item.empty {
         padding-left: 1.5vh;
     }
     .name-track {

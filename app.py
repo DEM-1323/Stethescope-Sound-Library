@@ -42,7 +42,7 @@ def list_files(directory):
                 audio_path = os.path.join(directory_path, f)
                 audio = AudioSegment.from_file(audio_path)
                 duration = len(audio) / 1000  # duration in seconds
-                audio_files.append((os.path.splitext(f)[0], duration))
+                audio_files.append((f, duration))
         print("Directory path:", directory_path)
         print("Audio files found:", audio_files)
 
