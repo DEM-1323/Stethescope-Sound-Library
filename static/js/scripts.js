@@ -115,21 +115,20 @@ function loadAudioFiles(directory) {
 
       // Event listener for previous audio track button
       document.getElementById("prevBtn").addEventListener("click", () => {
-        console.log(currentIndex);
         let lastIndex = (currentIndex - 1 + files.length) % files.length;
         file = files[lastIndex];
         playAudio(directory, file[0]);
         updateTrackIndex(lastIndex);
+        console.log(currentIndex);
       });
 
       // Event listener for next audio track button
       document.getElementById("nextBtn").addEventListener("click", () => {
-        console.log(currentIndex);
         let nextIndex = (currentIndex + 1) % files.length;
         file = files[nextIndex];
         playAudio(directory, file[0]);
-
         updateTrackIndex(nextIndex);
+        console.log(currentIndex);
       });
 
       fileSelectElement.classList.add("files");
@@ -141,7 +140,7 @@ function loadAudioFiles(directory) {
 }
 let audio = new Audio(); // Global audio object
 let isPlaying = false; // Track if audio is playing
-let repeatAudio = false;
+let repeatAudio = true;
 let currentIndex = -1; // Intialize the index for the audio file list
 
 // Setup global event listeners for audio controls

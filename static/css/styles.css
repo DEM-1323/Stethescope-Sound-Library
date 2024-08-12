@@ -55,13 +55,14 @@ h1, h2, h3, ul, li {
 
 #Department-Title {
     margin: 1vh 0 0;
-    font-size: 3rem;
+    text-align: center;
+    font-size: clamp(calc(1rem + 12px), 3rem, 35px);
 }
 
 /* App Title styles */
 #Title {
     text-align: center;
-    font-size: 4rem;
+    font-size: clamp(calc(1rem + 16px), 4rem, 45px);
     color:#005A8B;
 }
 
@@ -72,7 +73,7 @@ h1, h2, h3, ul, li {
 
 .Audio-Library {
     flex: 0 1 auto;
-    height: clamp(calc(2vh + 150px), 30%, calc(5vh + 250px));
+    height: clamp(calc(150px + 2vh), 30%, calc(5vh + 250px));
     width: 80%;
     overflow: hidden; /* cuts any overflow in the container */
     border-radius: calc(1vh + 5px);
@@ -83,7 +84,7 @@ h1, h2, h3, ul, li {
 .Audio-Library h3 {
     margin: 0;
     padding: 0.75vh 1vh;
-    font-size: 2rem;
+    font-size: clamp(1.5rem, 2rem, 20px);
     border-bottom: solid #78AFE9;
     background-color: #005A8B;
 }
@@ -100,17 +101,19 @@ h1, h2, h3, ul, li {
 
 /* Library Selection Styles */
 .Library-Select {
-    flex: 40%;
+    flex: 4;
+    width: 40%;
 }
 
 /* File Selection Styles */
 .File-Select {
-    flex: 60%;
+    flex: 6;
+    width: 60%;
 }
 
 .File-Select::before {
     position: absolute;
-    top: 0;
+    top: 1%;
     bottom: 0;
     left: calc(0%);
     z-index: 10; /* Adjust this depending on where you want the line */
@@ -121,7 +124,7 @@ h1, h2, h3, ul, li {
 
 .File-Select.files::after {
     position: absolute;
-    top: 0;
+    top: 1%;
     bottom: 0;
     left: calc(75%); /* Adjust this depending on where you want the line */
     z-index: 1;
@@ -145,7 +148,7 @@ ul {
 
 ul li {
     padding: .75vh 1.75vh;
-    font-size: calc(8px + .5vw + .5vh);
+    font-size: clamp(1.25rem, 2rem, 18px);
     color: #005A8B;
 }
 
@@ -201,7 +204,7 @@ li.selected:hover {
     flex: 1;
     position: relative;
     padding-left: 1.75vh;
-    max-width: 78%;
+    max-width: 75%;
     overflow: hidden;
     text-overflow: clip;
     white-space: nowrap;
@@ -209,9 +212,9 @@ li.selected:hover {
 
 .time-code {
     flex: 1;
-    max-width: 21%;
+    max-width: 25%;
     text-align: center;
-    font-size: calc(4px + .5vw + .5vh);
+    font-size: clamp(1.25rem, 2rem, 18px);
     color: #005A8B;
 }
 
@@ -223,7 +226,7 @@ li.selected:hover {
     align-items: center;
     margin: 3vh 0;
     padding: 20px;
-    height: clamp(calc(2vh + 200px), 40%, calc(10vh + 500px));
+    height: clamp(calc(200px + 2vh), 40%, 40vh);
     width: 80%;
     border-radius: calc(1vh + 5px);
     box-shadow: 2px 2px 6px 3px rgba(0, 0, 0, 0.2);
@@ -364,7 +367,8 @@ li.selected:hover {
 }
 
 #Footer-text {
-    font-size: calc(1.5rem);
+    text-align: center;
+    font-size: clamp(calc(0.5rem + 8px), 1.5rem, 25px);
 }
 
 /* Animations */
@@ -378,7 +382,7 @@ li.selected:hover {
 }
 
 /* Media Queries */
-@media (min-width: 820px) and (max-width:1024px) {
+@media (max-width:1024px) {
     html, body {
         background-color: #fff;
     }
@@ -395,33 +399,21 @@ li.selected:hover {
 
 @media (min-width: 1025px) {
     html, body {
-        background-color: #fff;
+        background-color: #fff; /* Change background color to add contrast */
     }
     .App {
-      max-width: 900px; /* Set a max-width if you want to restrict the app size */
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: add shadow for better focus */
+      max-width: 900px; /* max-width to restrict the app size */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* add shadow for better focus */
     }
-    .App-Header {
-        padding: 0;
-    }
-    .logo {
-        max-height: 50px;
-    }
-    #Title {
-        font-size: calc(10px + 1vh + 1vw);
-    }
+    
     .Audio-Library {
         max-height: 250px
     }
     .Audio-Library h3 {
         font-size: calc(10px + .25vw + .5vh);
     }
-    h3 {
-        font-size: calc(5px + .25vw + .25vh);
-    }
     ul li {
         padding: .5vh 2vh;
-        font-size: calc(8px + .25vw + .5vh);
     }
     .Audio-Item {
         padding: .5vh 0;
@@ -432,16 +424,4 @@ li.selected:hover {
     .name-track {
         padding-left: 1.5vh;
     }
-    .time-code {
-       font-size: calc(4px + .25vw + .5vh);
-    }
-    .Audio-Player {
-        margin: calc(10px + 3vh) 0;
-    }
-    .App-Footer {
-        padding: 0;
-    }
-    
-    
-
 }
