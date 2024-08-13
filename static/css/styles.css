@@ -73,7 +73,7 @@ h1, h2, h3, ul, li {
 
 .Audio-Library {
     flex: 0 1 auto;
-    height: clamp(150px, 30%, 30vh);
+    height: min(clamp(150px, 30%, 30vh), 250px);
     width: 80%;
     overflow: hidden; /* cuts any overflow in the container */
     border-radius: calc(1vh + 5px);
@@ -400,7 +400,6 @@ li.selected:hover {
 @media (min-width: 1025px) {
     html, body {
         background-color: #fff; /* Change background color to add contrast */
-        font-size: calc(0.5vh + 0.125vw);
     }
     .App {
       max-width: 900px; /* max-width to restrict the app size */
@@ -417,5 +416,11 @@ li.selected:hover {
     }
     .name-track {
         padding-left: 1.5vh;
+    }
+}
+
+@media (min-width: 1025px) and (min-height: 1250px)  {
+    html, body {
+        font-size: calc(0.5vh + 0.125vw);
     }
 }
