@@ -400,6 +400,7 @@ li.selected:hover {
 @media (min-width: 1025px) {
     html, body {
         background-color: #fff; /* Change background color to add contrast */
+        font-size: calc(0.5vh + 0.125vw);
     }
     .App {
       max-width: 900px; /* max-width to restrict the app size */
