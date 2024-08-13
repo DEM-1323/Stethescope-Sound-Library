@@ -141,6 +141,7 @@ function loadAudioFiles(directory) {
 let audio = new Audio(); // Global audio object
 let isPlaying = false; // Track if audio is playing
 let repeatAudio = true;
+audio.loop = true;
 let currentIndex = -1; // Intialize the index for the audio file list
 
 // Setup global event listeners for audio controls
