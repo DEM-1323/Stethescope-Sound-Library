@@ -73,7 +73,7 @@ h1, h2, h3, ul, li {
 
 .Audio-Library {
     flex: 0 1 auto;
-    height: clamp(calc(150px + 2vh), 30%, calc(5vh + 250px));
+    height: clamp(150px, 30%, 30vh);
     width: 80%;
     overflow: hidden; /* cuts any overflow in the container */
     border-radius: calc(1vh + 5px);
@@ -84,7 +84,7 @@ h1, h2, h3, ul, li {
 .Audio-Library h3 {
     margin: 0;
     padding: 0.75vh 1vh;
-    font-size: clamp(1.5rem, 2rem, 20px);
+    font-size: min(clamp(1.5rem, 2rem, 18px), 18px);
     border-bottom: solid #78AFE9;
     background-color: #005A8B;
 }
@@ -117,7 +117,7 @@ h1, h2, h3, ul, li {
     bottom: 0;
     left: calc(0%);
     z-index: 10; /* Adjust this depending on where you want the line */
-    width: 0.2rem; /* Width of the line */
+    width: min(0.2rem, 3px); /* Width of the line */
     content: '';
     background-color: #005A8B; /* Color of the line */
 }
@@ -128,7 +128,7 @@ h1, h2, h3, ul, li {
     bottom: 0;
     left: calc(75%); /* Adjust this depending on where you want the line */
     z-index: 1;
-    width: 0.2rem; /* Width of the line */
+    width: min(0.2rem, 3px); /* Width of the line */
     content: '';
     background-color: #005A8B; /* Color of the line */
 }
@@ -148,7 +148,7 @@ ul {
 
 ul li {
     padding: .75vh 1.75vh;
-    font-size: clamp(1.25rem, 2rem, 18px);
+    font-size: min(clamp(1.25rem, 2rem, 18px), 18px);
     color: #005A8B;
 }
 
@@ -214,7 +214,7 @@ li.selected:hover {
     flex: 1;
     max-width: 25%;
     text-align: center;
-    font-size: clamp(1.25rem, 2rem, 18px);
+    font-size: min(clamp(1.25rem, 2rem, 18px), 18px);
     color: #005A8B;
 }
 
@@ -247,19 +247,20 @@ li.selected:hover {
     display: inline-block;
     position: relative;
     margin: 1vh 0;
-    font-size: calc(12px + .5vw + .5vh);
+    font-size: min(clamp(2rem, 2.5rem, 30px), 30px);
 }
 
 /* Playback Controls Styles */
 #bigPlayPauseBtn {
     margin: auto 0;
-    font-size: 15vh;
+    font-size: min(clamp(5rem, 18rem, 250px), 250px);
 }
 
 .playback-time {
     margin: 0.5vh 0.5vh 0.5vh 0;
     width: 90%;
     text-align: right;
+    font-size: min(clamp(1.5rem, 2rem, 20px), 20px);
 }
 
 .seek-slider {
@@ -326,6 +327,7 @@ li.selected:hover {
     flex-direction: row;
     align-items: center;
     justify-content: space-evenly;
+    gap: clamp(10px, 2rem, 20px);
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
@@ -333,7 +335,7 @@ li.selected:hover {
 
 .play-pause-btn, .skip-btn {
     border: none;
-    padding: 0 1vw;
+    padding: 0;
     cursor: pointer;
     font-size: 3vh;
     background: none;
@@ -368,7 +370,7 @@ li.selected:hover {
 
 #Footer-text {
     text-align: center;
-    font-size: clamp(calc(0.5rem + 8px), 1.5rem, 25px);
+    font-size: min(clamp(1rem, 1.5rem, 20px), 20px);
 }
 
 /* Animations */
@@ -389,9 +391,6 @@ li.selected:hover {
     .App {
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: add shadow for better focus */
       }
-      .Audio-Library {
-        max-height: 250px
-    }
       .Audio-Player {
         margin: calc(10px + 3vh) 0;
     }
@@ -404,13 +403,6 @@ li.selected:hover {
     .App {
       max-width: 900px; /* max-width to restrict the app size */
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* add shadow for better focus */
-    }
-    
-    .Audio-Library {
-        max-height: 250px
-    }
-    .Audio-Library h3 {
-        font-size: calc(10px + .25vw + .5vh);
     }
     ul li {
         padding: .5vh 2vh;
