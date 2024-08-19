@@ -6,7 +6,7 @@
 html, body {
     margin: 0;
     padding: 0;
-    height: 100vh;
+    height: 100%;
     overflow: hidden;
     background-color: #005A8B;
     font-size: calc(0.5vh + 0.5vw);
@@ -45,12 +45,12 @@ h1, h2, h3, ul, li {
 /* Header and Logo styles */
 .App-Header {
     flex-direction: column; /* Stack logo and department title */
-    padding: 6vh 0;
+    padding: 5vh 0;
     box-shadow: 0px 2px 8px 3px rgba(0, 0, 0, 0.2); /* Adds depth */
 }
 
 .Logo {
-    height: clamp(3vh, 50px, 6vh);
+    height: clamp(2vh, 40px, 4vh);
 }
 
 #Department-Title {
@@ -115,8 +115,8 @@ h1, h2, h3, ul, li {
     position: absolute;
     top: 1%;
     bottom: 0;
-    left: calc(0%);
-    z-index: 10; /* Adjust this depending on where you want the line */
+    left: calc(0%); /* Adjust this depending on where you want the line */
+    z-index: 10; 
     width: min(0.2rem, 3px); /* Width of the line */
     content: '';
     background-color: #005A8B; /* Color of the line */
@@ -159,13 +159,13 @@ li.selected {
     background-color: #FEDE42;
     color: #132245;
 }
-li.selected:first-child {
-    border-top: none;
+li.selected:first-child { 
+    border-top: none; /* first li won't have top border */
 }
 
 li.selected:last-child {
-    border-bottom: none;
-    box-shadow: none;
+    border-bottom: none; /* last li won't have bottom border */
+    box-shadow: none; /* last li won't have box shadow */
 }
 
 li.selected:hover {
@@ -366,7 +366,7 @@ li.selected:hover {
 /* Footer Styles */
 .App-Footer {
     margin-top: auto; /* Pushes footer to bottom of App container */
-    padding: 4vh 0;
+    padding: 3vh 0;
 }
 
 #Footer-text {
@@ -419,7 +419,7 @@ li.selected:hover {
     }
 }
 
-@media (min-width: 1025px) and (min-height: 1250px)  {
+@media ((min-width: 1025px) and (min-height: 1250px)) or ((min-width: 1025px) and (max-height: 1249px)) {
     html, body {
         font-size: calc(0.5vh + 0.125vw);
     }
