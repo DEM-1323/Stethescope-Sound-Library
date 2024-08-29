@@ -2,6 +2,16 @@ document.addEventListener("DOMContentLoaded", function () {
   loadLibraries(); // Load libraries when document is ready
 });
 
+// Global variables
+let audio = new Audio(); // Global audio object
+let isPlaying = false; // Track if audio is playing
+let repeatAudio = true;
+audio.loop = true;
+let currentIndex = -1; // Initialize the index for the audio file list
+let lastDirectory = null; // Store the last directory to keep track of where the audio is playing from
+let lastFile = null; // Store the last file to continue playing when switching directories
+let lastFilesList = []; // Store the list of files from the last directory
+
 // This function fetches the list of directories from the Flask server
 function loadLibraries() {
   fetch("/directories")
@@ -37,8 +47,11 @@ function loadLibraries() {
     });
 }
 
-// This function fetches the list of audio files from the selected directory and handles all audio playback and loading events
+// This function fetches the list of audio files from the selected directory
+// and handles all audio playback and loading events
 function loadAudioFiles(directory) {
+  const isSwitchingBackToLastDirectory = directory === lastDirectory;
+
   fetch(`/files/${encodeURIComponent(directory)}`)
     .then((response) => {
       const contentType = response.headers.get("content-type");
@@ -51,31 +64,30 @@ function loadAudioFiles(directory) {
       return response.json();
     })
     .then((files) => {
-      if (!Array.isArray(files)) {
-        console.error("Unexpected response:", files);
-        alert("Failed to load files: " + (files.error || "Unknown error"));
-        return; // Exit if not an array
-      }
       const fileSelectElement = document.getElementById("File-Select");
       const audioListElement = document.getElementById("audioList");
       audioListElement.innerHTML = ""; // Clear the list first
 
-      if (files.length === 0) {
-        console.error("No files found or the files array is empty.");
+      if (!Array.isArray(files) || files.length === 0) {
+        console.error("No audio files found or the files array is empty.");
         fileSelectElement.classList.remove("files");
         const listItem = document.createElement("li");
         listItem.classList.add("Audio-Item.empty");
         listItem.textContent = "No audio files available in this directory.";
         audioListElement.appendChild(listItem);
-        //alert("No audio files available in this directory.");
-        return; // Exit the function to prevent further execution
+        return; // Exit if no files found
       }
 
-      for (let i = 0; i < files.length; i++) {
-        let file = files[i];
+      // Store the list of files from this directory if it is the last directory
+      if (isSwitchingBackToLastDirectory) {
+        lastFilesList = files;
+      }
+
+      // Populate new list of audio files
+      files.forEach((file, index) => {
         const listItem = document.createElement("li");
         listItem.classList.add("Audio-Item");
-        listItem.setAttribute("id", "audio-file-" + i);
+        listItem.setAttribute("id", `audio-file-${index}`);
 
         const nameTrack = document.createElement("div");
         nameTrack.classList.add("name-track");
@@ -86,49 +98,69 @@ function loadAudioFiles(directory) {
 
         const timeCode = document.createElement("span");
         timeCode.classList.add("time-code");
-        timeCode.textContent = formatTime(`${file[1].toFixed(2)}`);
+        timeCode.textContent = formatTime(file[1]);
 
         nameTrack.appendChild(audioName);
         listItem.appendChild(nameTrack);
         listItem.appendChild(timeCode);
 
         listItem.addEventListener("click", () => {
+          // Deselect all list items
           const allLis = audioListElement.querySelectorAll("li");
           const allNames = audioListElement.querySelectorAll(".audio-name");
           allLis.forEach((item) => item.classList.remove("selected"));
           allNames.forEach((item) => item.classList.remove("long-name"));
 
+          // Select the clicked list item
           listItem.classList.add("selected");
           const trackRect = nameTrack.getBoundingClientRect();
           const nameRect = audioName.getBoundingClientRect();
 
+          // If the audio name is too long, add the long-name class for scrolling
           if (nameRect.width > trackRect.width) {
             audioName.classList.add("long-name");
           }
-          console.log(trackRect.width, nameRect.width);
 
+          // Update the last directory and file
+          lastDirectory = directory;
+          lastFile = file[0];
+          lastFilesList = files; // Update the last files list with the current one
+          currentIndex = index; // Set currentIndex to the selected track
+
+          // Play the selected audio file
           playAudio(directory, file[0]);
-          updateTrackIndex(i);
         });
-        audioListElement.appendChild(listItem);
-      }
 
-      // Event listener for previous audio track button
-      document.getElementById("prevBtn").addEventListener("click", () => {
-        let lastIndex = (currentIndex - 1 + files.length) % files.length;
-        file = files[lastIndex];
-        playAudio(directory, file[0]);
-        updateTrackIndex(lastIndex);
-        console.log(currentIndex);
+        audioListElement.appendChild(listItem);
+
+        // Restore the last playing track if returning to the last directory
+        if (isSwitchingBackToLastDirectory && lastFile === file[0]) {
+          listItem.classList.add("selected");
+          updateTrackIndex(index);
+        }
       });
 
-      // Event listener for next audio track button
+      // Attach event listeners for prev/next buttons using the lastFilesList
+      document.getElementById("prevBtn").addEventListener("click", () => {
+        if (currentIndex <= 0) {
+          currentIndex = lastFilesList.length - 1; // Wrap around to the last track
+        } else {
+          currentIndex--;
+        }
+        lastFile = lastFilesList[currentIndex][0];
+        playAudio(lastDirectory, lastFile);
+        updateTrackIndex(currentIndex);
+      });
+
       document.getElementById("nextBtn").addEventListener("click", () => {
-        let nextIndex = (currentIndex + 1) % files.length;
-        file = files[nextIndex];
-        playAudio(directory, file[0]);
-        updateTrackIndex(nextIndex);
-        console.log(currentIndex);
+        if (currentIndex >= lastFilesList.length - 1) {
+          currentIndex = 0; // Wrap around to the first track
+        } else {
+          currentIndex++;
+        }
+        lastFile = lastFilesList[currentIndex][0];
+        playAudio(lastDirectory, lastFile);
+        updateTrackIndex(currentIndex);
       });
 
       fileSelectElement.classList.add("files");
@@ -138,115 +170,8 @@ function loadAudioFiles(directory) {
       document.getElementById("File-Select").classList.remove("files");
     });
 }
-let audio = new Audio(); // Global audio object
-let isPlaying = false; // Track if audio is playing
-let repeatAudio = true;
-audio.loop = true;
-let currentIndex = -1; // Intialize the index for the audio file list
 
-// Setup global event listeners for audio controls
-function setupAudioControls() {
-  document
-    .getElementById("playPauseBtn")
-    .addEventListener("click", togglePlayPause);
-  document
-    .getElementById("bigPlayPauseBtn")
-    .addEventListener("click", togglePlayPause);
-  document.getElementById("seekSlider").addEventListener("input", seekAudio);
-  document.getElementById("repeatBtn").addEventListener("click", repeatToggle);
-
-  audio.addEventListener("timeupdate", function () {
-    const seekSlider = document.getElementById("seekSlider");
-    const value = (audio.currentTime / audio.duration) * 100 || 0; // Calculate the current time percentage
-    seekSlider.style.background = `linear-gradient(to right, #FEDE42 0%, #FEDE42 ${value}%, #ddd ${value}%, #ddd 100%)`;
-    seekSlider.value = value;
-    updatePlaybackTime();
-  });
-}
-
-// Toggle play/pause of audio
-function togglePlayPause() {
-  if (!audio.src) {
-    return; // Do nothing if no source is set
-  }
-  if (audio.paused) {
-    audio.play();
-    isPlaying = true;
-  } else {
-    audio.pause();
-    isPlaying = false;
-  }
-  updatePlayPauseButton();
-}
-// Update which Track is currently selected using index number for foward and backwards buttons
-function updateTrackIndex(index) {
-  const audioListElement = document.getElementById("audioList");
-  const allLis = audioListElement.querySelectorAll("li");
-  const allNames = audioListElement.querySelectorAll(".audio-name");
-  allLis.forEach((item) => item.classList.remove("selected"));
-  allNames.forEach((item) => item.classList.remove("long-name"));
-
-  const currentItem = document.getElementById("audio-file-" + index);
-  currentItem.classList.add("selected");
-
-  const nameTrack = currentItem.querySelector(".name-track");
-  const audioName = currentItem.querySelector(".audio-name");
-
-  const trackRect = nameTrack.getBoundingClientRect();
-  const nameRect = audioName.getBoundingClientRect();
-
-  if (nameRect.width > trackRect.width) {
-    audioName.classList.add("long-name");
-  } else {
-    audioName.classList.remove("long-name");
-  }
-
-  currentIndex = index; // Update the current index
-}
-
-function updatePlaybackTime() {
-  const playbackTimeElement = document.querySelector(".playback-time");
-  const currentTime = formatTime(audio.currentTime);
-  const duration = formatTime(audio.duration);
-
-  playbackTimeElement.textContent = `${currentTime} / ${duration}`;
-}
-
-// Helper function to format seconds into minutes:seconds
-function formatTime(timeInSeconds) {
-  const minutes = Math.floor(timeInSeconds / 60);
-  const seconds = Math.floor(timeInSeconds % 60);
-  const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
-  return `${minutes}:${formattedSeconds}`;
-}
-
-// Update the seek slider based on current playback position
-function updateSeekSlider() {
-  const seekSlider = document.getElementById("seekSlider");
-  seekSlider.value = (audio.currentTime / audio.duration) * 100 || 0; // Update or reset to 0 if NaN
-}
-
-// Update the play/pause button icon based on current state
-function updatePlayPauseButton() {
-  const iconClass = isPlaying ? "fa-pause-circle" : "fa-play-circle";
-  const bigIconClass = isPlaying ? "fa-circle-pause" : "fa-circle-play";
-  document.getElementById(
-    "playPauseBtn"
-  ).innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
-  document.getElementById(
-    "bigPlayPauseBtn"
-  ).innerHTML = `<i class="fa-regular ${bigIconClass}"></i>`;
-}
-
-// Seek audio to new position
-function seekAudio() {
-  const seekSlider = document.getElementById("seekSlider");
-  if (audio.duration) {
-    audio.currentTime = (seekSlider.value / 100) * audio.duration;
-  }
-}
-
-// Load and play a specific audio file
+// Function to play a specific audio file
 function playAudio(directory, file) {
   const safeDirectory = encodeURIComponent(directory);
   const safeFile = encodeURIComponent(file);
@@ -271,19 +196,91 @@ function playAudio(directory, file) {
   });
 }
 
-function scrollName(file) {
-  const nameRect = file.getBoundingClientRect();
-  const trackRect = document
-    .getElementById("name-track")
-    .getBoundingClientRect();
+// Function to update the track index and UI when navigating between tracks
+function updateTrackIndex(index) {
+  const audioListElement = document.getElementById("audioList");
+  const allLis = audioListElement.querySelectorAll("li");
+  const allNames = audioListElement.querySelectorAll(".audio-name");
+  allLis.forEach((item) => item.classList.remove("selected"));
+  allNames.forEach((item) => item.classList.remove("long-name"));
 
-  if (nameRect.width > trackRect.width) {
-    return true;
-  } else {
-    return false;
+  const currentItem = document.getElementById("audio-file-" + index);
+  if (currentItem) {
+    currentItem.classList.add("selected");
+
+    const nameTrack = currentItem.querySelector(".name-track");
+    const audioName = currentItem.querySelector(".audio-name");
+
+    const trackRect = nameTrack.getBoundingClientRect();
+    const nameRect = audioName.getBoundingClientRect();
+
+    if (nameRect.width > trackRect.width) {
+      audioName.classList.add("long-name");
+    } else {
+      audioName.classList.remove("long-name");
+    }
   }
 }
 
+// Function to update the playback time display
+function updatePlaybackTime() {
+  const playbackTimeElement = document.querySelector(".playback-time");
+  const currentTime = formatTime(audio.currentTime);
+  const duration = formatTime(audio.duration);
+
+  playbackTimeElement.textContent = `${currentTime} / ${duration}`;
+}
+
+// Helper function to format seconds into minutes:seconds
+function formatTime(timeInSeconds) {
+  const minutes = Math.floor(timeInSeconds / 60);
+  const seconds = Math.floor(timeInSeconds % 60);
+  const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+  return `${minutes}:${formattedSeconds}`;
+}
+
+// Update the seek slider based on the current playback position
+function updateSeekSlider() {
+  const seekSlider = document.getElementById("seekSlider");
+  seekSlider.value = (audio.currentTime / audio.duration) * 100 || 0; // Update or reset to 0 if NaN
+}
+
+// Update the play/pause button icon based on the current state
+function updatePlayPauseButton() {
+  const iconClass = isPlaying ? "fa-pause-circle" : "fa-play-circle";
+  const bigIconClass = isPlaying ? "fa-circle-pause" : "fa-circle-play";
+  document.getElementById(
+    "playPauseBtn"
+  ).innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
+  document.getElementById(
+    "bigPlayPauseBtn"
+  ).innerHTML = `<i class="fa-regular ${bigIconClass}"></i>`;
+}
+
+// Toggle play/pause of the audio
+function togglePlayPause() {
+  if (!audio.src) {
+    return; // Do nothing if no source is set
+  }
+  if (audio.paused) {
+    audio.play();
+    isPlaying = true;
+  } else {
+    audio.pause();
+    isPlaying = false;
+  }
+  updatePlayPauseButton();
+}
+
+// Seek audio to a new position
+function seekAudio() {
+  const seekSlider = document.getElementById("seekSlider");
+  if (audio.duration) {
+    audio.currentTime = (seekSlider.value / 100) * audio.duration;
+  }
+}
+
+// Toggle repeat mode on or off
 function repeatToggle() {
   const repeatbtn = document.getElementById("repeatBtn");
   if (!repeatAudio) {
@@ -295,6 +292,26 @@ function repeatToggle() {
     repeatAudio = false;
     audio.loop = false;
   }
+}
+
+// Setup global event listeners for audio controls
+function setupAudioControls() {
+  document
+    .getElementById("playPauseBtn")
+    .addEventListener("click", togglePlayPause);
+  document
+    .getElementById("bigPlayPauseBtn")
+    .addEventListener("click", togglePlayPause);
+  document.getElementById("seekSlider").addEventListener("input", seekAudio);
+  document.getElementById("repeatBtn").addEventListener("click", repeatToggle);
+
+  audio.addEventListener("timeupdate", function () {
+    const seekSlider = document.getElementById("seekSlider");
+    const value = (audio.currentTime / audio.duration) * 100 || 0; // Calculate the current time percentage
+    seekSlider.style.background = `linear-gradient(to right, #FEDE42 0%, #FEDE42 ${value}%, #ddd ${value}%, #ddd 100%)`;
+    seekSlider.value = value;
+    updatePlaybackTime();
+  });
 }
 
 setupAudioControls(); // Initialize audio controls once
