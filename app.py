@@ -2,6 +2,7 @@ from flask import Flask, send_from_directory, jsonify, render_template
 from urllib.parse import unquote
 import os
 from flask_caching import Cache
+from pydub import AudioSegment
 import mutagen
 
 app = Flask(__name__)
@@ -76,22 +77,35 @@ def play_audio(directory, filename):
     # Serve the audio file directly as a static file
     return send_from_directory(directory_path, filename)
 
-# Utility function to get the duration of the audio file
+# Utility function to get the duration of the audio file using mutagen and fallback to pydub
 def get_audio_duration(file_path):
     """
     Get the duration of the audio file using mutagen.
-    Supports multiple audio formats such as MP3, AAC, FLAC, WAV, OGG, etc.
+    Falls back to pydub for formats that mutagen cannot handle (like some AAC files).
     """
     try:
-        # Automatically detects the audio format and retrieves metadata
+        # Attempt to get duration using mutagen
         audio = mutagen.File(file_path)
         if audio and hasattr(audio.info, 'length'):
-            return audio.info.length  # duration in seconds
-        else:
-            return 0  # Default to 0 if duration cannot be determined
+            if audio.info.length > 0:
+                return audio.info.length  # duration in seconds
+            else:
+                # Fall back to pydub if mutagen fails or returns 0 for certain formats
+                return get_duration_with_pydub(file_path)
     except Exception as e:
-        print(f"Error getting audio duration for {file_path}: {e}")
-        return 0
+        print(f"Error getting audio duration for {file_path} using mutagen: {e}")
+        return get_duration_with_pydub(file_path)
+
+def get_duration_with_pydub(file_path):
+    """
+    Fallback to pydub to get the duration for formats not supported by mutagen.
+    """
+    try:
+        audio = AudioSegment.from_file(file_path)
+        return len(audio) / 1000  # pydub returns duration in milliseconds
+    except Exception as e:
+        print(f"Error getting audio duration for {file_path} using pydub: {e}")
+        return 0  # Return 0 if both mutagen and pydub fail
 
 if __name__ == '__main__':
     app.run(debug=True)
