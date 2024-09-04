@@ -159,6 +159,7 @@ li.selected {
     background-color: #FEDE42;
     color: #132245;
 }
+
 li.selected:first-child { 
     border-top: none; /* first li won't have top border */
 }
@@ -168,6 +169,9 @@ li.selected:last-child {
     box-shadow: none; /* last li won't have box shadow */
 }
 
+li.selected:is(:first-child):is(:last-child) {
+    border-bottom: solid #005A8B; /* Add bottom border if single li in list */
+}
 li.selected:hover {
     background-color: #FEDE42;
 }
