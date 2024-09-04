@@ -15,7 +15,7 @@ def index():
 @app.route('/directories', methods=['GET'])
 def list_directories():
     # List all directories in the AUDIO_LIB
-    dirs = next(os.walk(AUDIO_LIB))[1]
+    dirs = sorted(next(os.walk(AUDIO_LIB))[1])
     return jsonify(dirs)
 
 @app.route('/files/<path:directory>', methods=['GET'])
