@@ -8,6 +8,7 @@ let isPlaying = false; // Track if audio is playing
 let repeatAudio = true;
 audio.loop = true;
 let currentIndex = -1; // Initialize the index for the audio file list
+let currentDirectory = null; // Initialize the current directory
 let lastDirectory = null; // Store the last directory to keep track of where the audio is playing from
 let lastFile = null; // Store the last file to continue playing when switching directories
 let lastFilesList = []; // Store the list of files from the last directory
@@ -33,9 +34,9 @@ function loadLibraries() {
           const allLis = libraryListElement.querySelectorAll("li");
           allLis.forEach((item) => item.classList.remove("selected"));
 
-          // Add 'selected' class to the clicked list item
+          // Add 'selected' class to the clicked list item and set the current directory
           li.classList.add("selected");
-
+          currentDirectory = dir;
           // Load audio files for the selected directory
           loadAudioFiles(dir);
         });
@@ -76,11 +77,6 @@ function loadAudioFiles(directory) {
         listItem.textContent = "No audio files available in this directory.";
         audioListElement.appendChild(listItem);
         return; // Exit if no files found
-      }
-
-      // Store the list of files from this directory if it is the last directory
-      if (isSwitchingBackToLastDirectory) {
-        lastFilesList = files;
       }
 
       // Populate new list of audio files
@@ -135,35 +131,14 @@ function loadAudioFiles(directory) {
 
         // Restore the last playing track if returning to the last directory
         if (isSwitchingBackToLastDirectory && lastFile === file[0]) {
-          listItem.classList.add("selected");
           updateTrackIndex(index);
         }
       });
 
-      // Attach event listeners for prev/next buttons using the lastFilesList
-      document.getElementById("prevBtn").addEventListener("click", () => {
-        if (currentIndex <= 0) {
-          currentIndex = lastFilesList.length - 1; // Wrap around to the last track
-        } else {
-          currentIndex--;
-        }
-        lastFile = lastFilesList[currentIndex][0];
-        playAudio(lastDirectory, lastFile);
-        updateTrackIndex(currentIndex);
-      });
-
-      document.getElementById("nextBtn").addEventListener("click", () => {
-        if (currentIndex >= lastFilesList.length - 1) {
-          currentIndex = 0; // Wrap around to the first track
-        } else {
-          currentIndex++;
-        }
-        lastFile = lastFilesList[currentIndex][0];
-        playAudio(lastDirectory, lastFile);
-        updateTrackIndex(currentIndex);
-      });
-
-      fileSelectElement.classList.add("files");
+      // Store the list of files for future navigation only if it's the last playing directory
+      if (isSwitchingBackToLastDirectory) {
+        lastFilesList = files;
+      }
     })
     .catch((error) => {
       console.error("Error fetching audio files:", error);
@@ -201,23 +176,29 @@ function updateTrackIndex(index) {
   const audioListElement = document.getElementById("audioList");
   const allLis = audioListElement.querySelectorAll("li");
   const allNames = audioListElement.querySelectorAll(".audio-name");
+
+  // Deselect all list items and remove 'long-name' class from names
   allLis.forEach((item) => item.classList.remove("selected"));
   allNames.forEach((item) => item.classList.remove("long-name"));
 
-  const currentItem = document.getElementById("audio-file-" + index);
-  if (currentItem) {
-    currentItem.classList.add("selected");
+  // Check if the current dirrectory is the same as the last playing directory
+  if (lastDirectory === currentDirectory) {
+    // Track the current playing track and update the UI
+    const currentItem = document.getElementById("audio-file-" + index);
+    if (currentItem) {
+      currentItem.classList.add("selected");
 
-    const nameTrack = currentItem.querySelector(".name-track");
-    const audioName = currentItem.querySelector(".audio-name");
+      const nameTrack = currentItem.querySelector(".name-track");
+      const audioName = currentItem.querySelector(".audio-name");
 
-    const trackRect = nameTrack.getBoundingClientRect();
-    const nameRect = audioName.getBoundingClientRect();
+      const trackRect = nameTrack.getBoundingClientRect();
+      const nameRect = audioName.getBoundingClientRect();
 
-    if (nameRect.width > trackRect.width) {
-      audioName.classList.add("long-name");
-    } else {
-      audioName.classList.remove("long-name");
+      if (nameRect.width > trackRect.width) {
+        audioName.classList.add("long-name");
+      } else {
+        audioName.classList.remove("long-name");
+      }
     }
   }
 }
@@ -296,21 +277,51 @@ function repeatToggle() {
 
 // Setup global event listeners for audio controls
 function setupAudioControls() {
+  // Play/Pause button listeners
   document
     .getElementById("playPauseBtn")
     .addEventListener("click", togglePlayPause);
   document
     .getElementById("bigPlayPauseBtn")
     .addEventListener("click", togglePlayPause);
+
+  // Seek slider listener
   document.getElementById("seekSlider").addEventListener("input", seekAudio);
+
+  // Repeat button listener
   document.getElementById("repeatBtn").addEventListener("click", repeatToggle);
 
+  // Time update listener for the audio
   audio.addEventListener("timeupdate", function () {
     const seekSlider = document.getElementById("seekSlider");
     const value = (audio.currentTime / audio.duration) * 100 || 0; // Calculate the current time percentage
     seekSlider.style.background = `linear-gradient(to right, #FEDE42 0%, #FEDE42 ${value}%, #ddd ${value}%, #ddd 100%)`;
     seekSlider.value = value;
     updatePlaybackTime();
+  });
+
+  // Prev button listener
+  document.getElementById("prevBtn").addEventListener("click", () => {
+    if (currentIndex <= 0) {
+      currentIndex = lastFilesList.length - 1; // Wrap around to the last track
+    } else {
+      currentIndex--;
+    }
+    lastFile = lastFilesList[currentIndex][0];
+    playAudio(lastDirectory, lastFile);
+    updateTrackIndex(currentIndex);
+  });
+
+  // Next button listener
+  document.getElementById("nextBtn").addEventListener("click", () => {
+    if (currentIndex >= lastFilesList.length - 1) {
+      currentIndex = 0; // Wrap around to the first track
+    } else {
+      currentIndex++;
+    }
+    lastFile = lastFilesList[currentIndex][0];
+    playAudio(lastDirectory, lastFile);
+    updateTrackIndex(currentIndex);
   });
 }
 
