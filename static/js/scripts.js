@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
   loadLibraries(); // Load libraries when document is ready
+  setupAudioControls(); // Set up audio controls (play, pause, prev, next)
 });
 
 // Global variables
@@ -325,5 +326,3 @@ function setupAudioControls() {
     updateTrackIndex(currentIndex);
   });
 }
-
-setupAudioControls(); // Initialize audio controls once
