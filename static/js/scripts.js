@@ -1,61 +1,65 @@
 document.addEventListener("DOMContentLoaded", function () {
-  loadLibraries(); // Load libraries when document is ready
+  loadLibraries(); // Load libraries when the document is ready
   setupAudioControls(); // Set up audio controls (play, pause, prev, next)
 });
 
 // Global variables
-let audio = new Audio(); // Global audio object
-let isPlaying = false; // Track if audio is playing
-let repeatAudio = true;
-audio.loop = true;
-let currentIndex = -1; // Initialize the index for the audio file list
-let currentDirectory = null; // Initialize the current directory
-let lastDirectory = null; // Store the last directory to keep track of where the audio is playing from
-let lastFile = null; // Store the last file to continue playing when switching directories
-let lastFilesList = []; // Store the list of files from the last directory
-let fileCache = {}; // Cache for already fetched files by directory
+let audio = new Audio(); // Create a global audio object to control audio playback
+let isPlaying = false; // Boolean to track if audio is currently playing
+let repeatAudio = true; // Boolean to track repeat state
+audio.loop = true; // Set audio to loop by default
+let currentIndex = -1; // Track the current index of the audio file being played
+let currentDirectory = null; // Track the current directory being accessed
+let lastDirectory = null; // Track the last directory that played audio
+let lastFile = null; // Track the last file being played
+let lastFilesList = []; // Store the list of files in the last played directory
+let fileCache = {}; // Cache object to store previously fetched audio files by directory
 
-// This function fetches the list of directories from the Flask server
+/**
+ * Fetches the list of directories from the server and populates them into
+ * the library list in the HTML. Adds click event listeners to each directory
+ * that will trigger loading of audio files from the selected directory.
+ */
 function loadLibraries() {
   fetch("/directories")
     .then((response) => response.json())
     .then((directories) => {
       const libraryListElement = document.getElementById("libraryList");
-      libraryListElement.innerHTML = ""; // Clear the list first
+      libraryListElement.innerHTML = ""; // Clear the list before adding new directories
 
+      // Iterate through the directories received from the server
       directories.forEach((dir) => {
         const li = document.createElement("li");
-        li.textContent = dir;
+        li.textContent = dir; // Set the directory name as the list item text
         li.addEventListener("click", () => {
-          // Remove 'selected' class from all list items
-          const allLis = libraryListElement.querySelectorAll("li");
-          allLis.forEach((item) => item.classList.remove("selected"));
-
-          // Add 'selected' class to the clicked list item and set the current directory
-          li.classList.add("selected");
-          currentDirectory = dir;
-          // Load audio files for the selected directory
-          loadAudioFiles(dir);
+          clearSelections(libraryListElement); // Deselect all previously selected directories
+          li.classList.add("selected"); // Highlight the clicked directory
+          currentDirectory = dir; // Set the clicked directory as the current directory
+          loadAudioFiles(dir); // Load the audio files in the selected directory
         });
-        libraryListElement.appendChild(li);
+        libraryListElement.appendChild(li); // Append the directory to the list
       });
     })
     .catch((error) => console.error("Error fetching directories:", error));
 }
 
-// This function fetches the list of audio files from the selected directory
-// or uses the cache if the directory has already been loaded
+/**
+ * Fetches the list of audio files from the selected directory. If the directory
+ * has been previously loaded, it uses cached data instead of fetching it again.
+ * This reduces redundant fetch requests and speeds up the user experience.
+ */
 function loadAudioFiles(directory) {
   if (fileCache[directory]) {
+    // If the directory is cached, load files from the cache
     console.log("Using cached files for directory:", directory);
     populateFileList(directory, fileCache[directory]);
   } else {
+    // If not cached, fetch the files from the server
     fetch(`/files/${encodeURIComponent(directory)}`)
       .then((response) => response.json())
       .then((files) => {
-        // Cache the fetched files for future use
-        fileCache[directory] = files;
-        populateFileList(directory, files);
+        fileCache[directory] = files; // Cache the fetched files for future use
+        populateFileList(directory, files); // Populate the file list with the fetched data
       })
       .catch((error) => {
         console.error("Error fetching audio files:", error);
@@ -64,159 +68,215 @@ function loadAudioFiles(directory) {
   }
 }
 
-// Populate the file list with fetched audio files
+/**
+ * Populates the audio file list in the UI with the audio files fetched from the server
+ * or cache. Each file in the directory gets a clickable list item that plays the
+ * corresponding audio file when clicked.
+ */
 function populateFileList(directory, files) {
   const fileSelectElement = document.getElementById("File-Select");
   const audioListElement = document.getElementById("audioList");
-  audioListElement.innerHTML = ""; // Clear the list first
+  audioListElement.innerHTML = ""; // Clear the audio list before adding new files
 
-  if (!Array.isArray(files) || files.length === 0) {
+  if (!files.length) {
+    // If there are no files, display a message
     fileSelectElement.classList.remove("files");
     const listItem = document.createElement("li");
     listItem.classList.add("Audio-Item.empty");
     listItem.textContent = "No audio files available in this directory.";
     audioListElement.appendChild(listItem);
-    return; // Exit if no files found
+    return;
   }
 
-  fileSelectElement.classList.add("files");
+  fileSelectElement.classList.add("files"); // Indicate files are being displayed
   files.forEach((file, index) => {
     const listItem = document.createElement("li");
-    listItem.classList.add("Audio-Item");
-    listItem.setAttribute("id", `audio-file-${index}`);
+    listItem.classList.add("Audio-Item"); // Add class to list item for styling
+    listItem.setAttribute("id", `audio-file-${index}`); // Set unique ID based on index
 
     const nameTrack = document.createElement("div");
     nameTrack.classList.add("name-track");
 
     const audioName = document.createElement("span");
     audioName.classList.add("audio-name");
-    audioName.textContent = file[0];
+    audioName.textContent = file[0]; // Set the audio file name as text
 
     const timeCode = document.createElement("span");
     timeCode.classList.add("time-code");
-    timeCode.textContent = formatTime(file[1]);
+    timeCode.textContent = formatTime(file[1]); // Display the formatted duration of the file
 
-    nameTrack.appendChild(audioName);
+    nameTrack.appendChild(audioName); // Append the name to the name track
     listItem.appendChild(nameTrack);
     listItem.appendChild(timeCode);
 
+    // Add click listener to each audio file list item to play the file
     listItem.addEventListener("click", () => {
-      // Deselect all list items
-      const allLis = audioListElement.querySelectorAll("li");
-      const allNames = audioListElement.querySelectorAll(".audio-name");
-      allLis.forEach((item) => item.classList.remove("selected"));
-      allNames.forEach((item) => item.classList.remove("long-name"));
+      clearSelections(audioListElement); // Clear the selected class from all items
+      listItem.classList.add("selected"); // Add selected class to the clicked item
 
-      // Select the clicked list item
-      listItem.classList.add("selected");
-      const trackRect = nameTrack.getBoundingClientRect();
-      const nameRect = audioName.getBoundingClientRect();
+      handleLongNameScroll(audioName, nameTrack); // Handle scrolling for long file names
 
-      // If the audio name is too long, add the long-name class for scrolling
-      if (nameRect.width > trackRect.width) {
-        audioName.classList.add("long-name");
-      }
-
-      // Update the last directory and file
+      // Update global tracking variables for the selected file and directory
       lastDirectory = directory;
       lastFile = file[0];
-      lastFilesList = files; // Update the last files list with the current one
-      currentIndex = index; // Set currentIndex to the selected track
+      lastFilesList = files;
+      currentIndex = index;
 
-      // Play the selected audio file
-      playAudio(directory, file[0]);
+      playAudio(directory, file[0]); // Play the selected audio file
     });
 
-    audioListElement.appendChild(listItem);
+    audioListElement.appendChild(listItem); // Add the list item to the audio list
 
-    // Restore the last playing track if returning to the last directory
+    // If returning to the last played directory, update the UI to reflect the currently playing track
     if (directory === lastDirectory && lastFile === file[0]) {
       updateTrackIndex(index);
     }
   });
 }
 
-// Function to play a specific audio file
+/**
+ * Plays the selected audio file. The file is fetched from the server and played
+ * using the global `audio` object. The now playing UI is also updated.
+ */
 function playAudio(directory, file) {
-  const safeDirectory = encodeURIComponent(directory);
-  const safeFile = encodeURIComponent(file);
+  const safeDirectory = encodeURIComponent(directory); // URL-safe encoding
+  const safeFile = encodeURIComponent(file); // URL-safe encoding
 
   const nowPlaying = document.getElementById("nowPlaying");
-  nowPlaying.innerHTML = file;
-  const playingRect = nowPlaying.getBoundingClientRect();
-  const titleRect = document
-    .getElementById("audioTitle")
-    .getBoundingClientRect();
-  if (playingRect.width > titleRect.width) {
-    nowPlaying.classList.add("long-name");
-  } else {
-    nowPlaying.classList.remove("long-name");
-  }
+  nowPlaying.innerHTML = file; // Update the now playing text in the UI
 
+  handleLongNameScroll(nowPlaying, document.getElementById("audioTitle")); // Handle scrolling for long names
+
+  // Set the audio source and play the file
   audio.src = `/audio/${safeDirectory}/${safeFile}`;
-  audio.addEventListener("loadeddata", () => {
-    audio.play();
-    isPlaying = true;
-    updatePlayPauseButton();
-  });
+  audio.play();
+  isPlaying = true; // Mark audio as playing
+  updatePlayPauseButton(); // Update the play/pause button state
 }
 
-// Function to update the track index and UI when navigating between tracks
+/**
+ * Updates the track index in the UI when navigating between tracks.
+ * Ensures that the correct file is highlighted and displayed as selected.
+ */
 function updateTrackIndex(index) {
   const audioListElement = document.getElementById("audioList");
-  const allLis = audioListElement.querySelectorAll("li");
-  const allNames = audioListElement.querySelectorAll(".audio-name");
+  clearSelections(audioListElement); // Deselect all items before selecting the current one
 
-  // Deselect all list items and remove 'long-name' class from names
-  allLis.forEach((item) => item.classList.remove("selected"));
-  allNames.forEach((item) => item.classList.remove("long-name"));
-
-  // Check if the current directory is the same as the last playing directory
+  // If the last directory matches the current one, update the selected item
   if (lastDirectory === currentDirectory) {
-    // Track the current playing track and update the UI
-    const currentItem = document.getElementById("audio-file-" + index);
+    const currentItem = document.getElementById(`audio-file-${index}`);
     if (currentItem) {
       currentItem.classList.add("selected");
-
-      const nameTrack = currentItem.querySelector(".name-track");
-      const audioName = currentItem.querySelector(".audio-name");
-
-      const trackRect = nameTrack.getBoundingClientRect();
-      const nameRect = audioName.getBoundingClientRect();
-
-      if (nameRect.width > trackRect.width) {
-        audioName.classList.add("long-name");
-      } else {
-        audioName.classList.remove("long-name");
-      }
+      handleLongNameScroll(
+        currentItem.querySelector(".audio-name"),
+        currentItem.querySelector(".name-track")
+      );
     }
   }
 }
 
-// Function to update the playback time display
-function updatePlaybackTime() {
-  const playbackTimeElement = document.querySelector(".playback-time");
-  const currentTime = formatTime(audio.currentTime);
-  const duration = formatTime(audio.duration);
-
-  playbackTimeElement.textContent = `${currentTime} / ${duration}`;
+/**
+ * Clears all selections by removing the 'selected' class from each list item
+ * and resets the 'long-name' class for handling long name scrolling.
+ */
+function clearSelections(element) {
+  const allLis = element.querySelectorAll("li");
+  const allNames = element.querySelectorAll(".audio-name");
+  allLis.forEach((item) => item.classList.remove("selected"));
+  allNames.forEach((item) => item.classList.remove("long-name"));
 }
 
-// Helper function to format seconds into minutes:seconds
+/**
+ * Handles the case when a file or track name is too long to fit in the display.
+ * Adds a class for scrolling the name if it exceeds the available space.
+ */
+function handleLongNameScroll(nameElement, trackElement) {
+  const trackRect = trackElement.getBoundingClientRect();
+  const nameRect = nameElement.getBoundingClientRect();
+  if (nameRect.width > trackRect.width) {
+    nameElement.classList.add("long-name"); // Enable scrolling for long names
+  } else {
+    nameElement.classList.remove("long-name"); // Remove scrolling if it fits
+  }
+}
+
+/**
+ * Formats a duration in seconds into a minutes:seconds format.
+ * This is used to display the duration of audio files in the list.
+ */
 function formatTime(timeInSeconds) {
   const minutes = Math.floor(timeInSeconds / 60);
   const seconds = Math.floor(timeInSeconds % 60);
-  const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
-  return `${minutes}:${formattedSeconds}`;
+  return `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
 }
 
-// Update the seek slider based on the current playback position
-function updateSeekSlider() {
-  const seekSlider = document.getElementById("seekSlider");
-  seekSlider.value = (audio.currentTime / audio.duration) * 100 || 0; // Update or reset to 0 if NaN
+// Setup global event listeners for audio controls (play, pause, next, prev)
+function setupAudioControls() {
+  document
+    .getElementById("playPauseBtn")
+    .addEventListener("click", togglePlayPause);
+  document
+    .getElementById("bigPlayPauseBtn")
+    .addEventListener("click", togglePlayPause);
+
+  // Add seek slider listener to allow seeking through the audio
+  document.getElementById("seekSlider").addEventListener("input", seekAudio);
+
+  // Add repeat button listener to toggle repeat mode
+  document.getElementById("repeatBtn").addEventListener("click", repeatToggle);
+
+  // Update seek slider and playback time while the audio is playing
+  audio.addEventListener("timeupdate", () => {
+    const seekSlider = document.getElementById("seekSlider");
+    const value = (audio.currentTime / audio.duration) * 100 || 0;
+    seekSlider.style.background = `linear-gradient(to right, #FEDE42 0%, #FEDE42 ${value}%, #ddd ${value}%, #ddd 100%)`;
+    seekSlider.value = value;
+    updatePlaybackTime(); // Update the playback time display
+  });
+
+  // Previous and Next button listeners for navigating through the playlist
+  document.getElementById("prevBtn").addEventListener("click", () => {
+    if (currentIndex <= 0) {
+      currentIndex = lastFilesList.length - 1;
+    } else {
+      currentIndex--;
+    }
+    playAudio(lastDirectory, lastFilesList[currentIndex][0]); // Play previous track
+    updateTrackIndex(currentIndex); // Update UI to reflect the selected track
+  });
+
+  document.getElementById("nextBtn").addEventListener("click", () => {
+    if (currentIndex >= lastFilesList.length - 1) {
+      currentIndex = 0;
+    } else {
+      currentIndex++;
+    }
+    playAudio(lastDirectory, lastFilesList[currentIndex][0]); // Play next track
+    updateTrackIndex(currentIndex); // Update UI to reflect the selected track
+  });
 }
 
-// Update the play/pause button icon based on the current state
+// Update playback time display
+function updatePlaybackTime() {
+  const playbackTimeElement = document.querySelector(".playback-time");
+  playbackTimeElement.textContent = `${formatTime(
+    audio.currentTime
+  )} / ${formatTime(audio.duration)}`; // Show current time and total duration
+}
+
+// Toggle play/pause state for the audio
+function togglePlayPause() {
+  if (audio.paused) {
+    audio.play(); // Play the audio if paused
+    isPlaying = true;
+  } else {
+    audio.pause(); // Pause the audio if playing
+    isPlaying = false;
+  }
+  updatePlayPauseButton(); // Update the play/pause button UI
+}
+
+// Update the play/pause button state in the UI
 function updatePlayPauseButton() {
   const iconClass = isPlaying ? "fa-pause-circle" : "fa-play-circle";
   const bigIconClass = isPlaying ? "fa-circle-pause" : "fa-circle-play";
@@ -228,89 +288,17 @@ function updatePlayPauseButton() {
   ).innerHTML = `<i class="fa-regular ${bigIconClass}"></i>`;
 }
 
-// Toggle play/pause of the audio
-function togglePlayPause() {
-  if (!audio.src) {
-    return; // Do nothing if no source is set
-  }
-  if (audio.paused) {
-    audio.play();
-    isPlaying = true;
-  } else {
-    audio.pause();
-    isPlaying = false;
-  }
-  updatePlayPauseButton();
-}
-
-// Seek audio to a new position
+// Seek audio to a new position based on slider input
 function seekAudio() {
   const seekSlider = document.getElementById("seekSlider");
-  if (audio.duration) {
-    audio.currentTime = (seekSlider.value / 100) * audio.duration;
-  }
+  audio.currentTime = (seekSlider.value / 100) * audio.duration; // Adjust current time of the audio
 }
 
-// Toggle repeat mode on or off
+// Toggle repeat mode for the audio
 function repeatToggle() {
-  const repeatbtn = document.getElementById("repeatBtn");
-  if (!repeatAudio) {
-    repeatbtn.style.opacity = "1";
-    repeatAudio = true;
-    audio.loop = true;
-  } else {
-    repeatbtn.style.opacity = "0.5";
-    repeatAudio = false;
-    audio.loop = false;
-  }
-}
-
-// Setup global event listeners for audio controls
-function setupAudioControls() {
-  // Play/Pause button listeners
-  document
-    .getElementById("playPauseBtn")
-    .addEventListener("click", togglePlayPause);
-  document
-    .getElementById("bigPlayPauseBtn")
-    .addEventListener("click", togglePlayPause);
-
-  // Seek slider listener
-  document.getElementById("seekSlider").addEventListener("input", seekAudio);
-
-  // Repeat button listener
-  document.getElementById("repeatBtn").addEventListener("click", repeatToggle);
-
-  // Time update listener for the audio
-  audio.addEventListener("timeupdate", function () {
-    const seekSlider = document.getElementById("seekSlider");
-    const value = (audio.currentTime / audio.duration) * 100 || 0; // Calculate the current time percentage
-    seekSlider.style.background = `linear-gradient(to right, #FEDE42 0%, #FEDE42 ${value}%, #ddd ${value}%, #ddd 100%)`;
-    seekSlider.value = value;
-    updatePlaybackTime();
-  });
-
-  // Prev button listener
-  document.getElementById("prevBtn").addEventListener("click", () => {
-    if (currentIndex <= 0) {
-      currentIndex = lastFilesList.length - 1; // Wrap around to the last track
-    } else {
-      currentIndex--;
-    }
-    lastFile = lastFilesList[currentIndex][0];
-    playAudio(lastDirectory, lastFile);
-    updateTrackIndex(currentIndex);
-  });
-
-  // Next button listener
-  document.getElementById("nextBtn").addEventListener("click", () => {
-    if (currentIndex >= lastFilesList.length - 1) {
-      currentIndex = 0; // Wrap around to the first track
-    } else {
-      currentIndex++;
-    }
-    lastFile = lastFilesList[currentIndex][0];
-    playAudio(lastDirectory, lastFile);
-    updateTrackIndex(currentIndex);
-  });
+  repeatAudio = !repeatAudio;
+  audio.loop = repeatAudio; // Enable or disable looping based on repeat state
+  document.getElementById("repeatBtn").style.opacity = repeatAudio
+    ? "1"
+    : "0.5"; // Update repeat button opacity to reflect the state
 }
