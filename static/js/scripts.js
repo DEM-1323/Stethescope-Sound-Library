@@ -80,6 +80,7 @@ function loadAudioFiles(directory) {
       }
 
       // Populate new list of audio files
+      fileSelectElement.classList.add("files");
       files.forEach((file, index) => {
         const listItem = document.createElement("li");
         listItem.classList.add("Audio-Item");
