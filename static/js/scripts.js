@@ -99,7 +99,8 @@ function populateFileList(directory, files) {
 
     const audioName = document.createElement("span");
     audioName.classList.add("audio-name");
-    audioName.textContent = file[0]; // Set the audio file name as text
+
+    audioName.textContent = file[0].split(".")[0]; // Set the audio file name as text
 
     const timeCode = document.createElement("span");
     timeCode.classList.add("time-code");
@@ -143,7 +144,7 @@ function playAudio(directory, file) {
   const safeFile = encodeURIComponent(file); // URL-safe encoding
 
   const nowPlaying = document.getElementById("nowPlaying");
-  nowPlaying.innerHTML = file; // Update the now playing text in the UI
+  nowPlaying.innerHTML = file.split(".")[0]; // Update the now playing text in the UI
 
   handleLongNameScroll(nowPlaying, document.getElementById("audioTitle")); // Handle scrolling for long names
 
