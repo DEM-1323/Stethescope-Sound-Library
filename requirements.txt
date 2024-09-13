@@ -1,0 +1,4 @@
+Flask==3.0.3
+Flask_Caching==2.3.0
+mutagen==1.47.0
+pydub==0.25.1
