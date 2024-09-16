@@ -10,6 +10,9 @@ app = Flask(__name__)
 # The base directory where your audio files are located
 AUDIO_LIB = os.path.abspath('assets/audio_files')
 
+# Force HTTPS
+app.config['PREFERRED_URL_SCHEME'] = 'https'
+
 # Configure Flask-Caching
 app.config['CACHE_TYPE'] = 'simple'
 app.config['CACHE_DEFAULT_TIMEOUT'] = 300  # Cache for 5 minutes
