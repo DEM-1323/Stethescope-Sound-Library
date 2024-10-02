@@ -18,6 +18,9 @@ app.config['CACHE_TYPE'] = 'simple'
 app.config['CACHE_DEFAULT_TIMEOUT'] = 300  # Cache for 5 minutes
 cache = Cache(app)
 
+@app.route('/')
+def home():
+    return stethescope_sound_library()
 
 @app.route('/ccerapp')
 def stethescope_sound_library():
