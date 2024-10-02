@@ -20,6 +20,10 @@ cache = Cache(app)
 
 @app.route('/')
 def index():
+    return 'index'
+
+@app.route('/ccerapp')
+def stethescope_sound_library():
     return render_template('main.html')
 
 # Caching directory listing for faster performance
