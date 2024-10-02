@@ -19,10 +19,6 @@ app.config['CACHE_DEFAULT_TIMEOUT'] = 300  # Cache for 5 minutes
 cache = Cache(app)
 
 @app.route('/')
-def index():
-    return 'index'
-
-@app.route('/ccerapp')
 def stethescope_sound_library():
     return render_template('main.html')
 
@@ -115,6 +111,5 @@ def get_duration_with_pydub(file_path):
         return 0  # Return 0 if both mutagen and pydub fail
 
 if __name__ == '__main__':
-    from waitress import serve
-    serve(app, host='0.0.0.0', port=8000)
+    app.run(debug=True)
 
