@@ -20,7 +20,7 @@ cache = Cache(app)
 
 @app.route('/')
 def home():
-    return 'index.html'
+    return stethescope_sound_library()
 
 @app.route('/ccerapp')
 def stethescope_sound_library():
