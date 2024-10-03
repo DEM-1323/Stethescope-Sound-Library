@@ -20,14 +20,14 @@ cache = Cache(app)
 
 @app.route('/')
 def home():
-    return stethescope_sound_library()
+    return "index"
 
-@app.route('/ccerapp')
+@app.route('/cceraudio')
 def stethescope_sound_library():
     return render_template('main.html')
 
 # Caching directory listing for faster performance
-@app.route('/ccerapp/directories', methods=['GET'])
+@app.route('/directories', methods=['GET'])
 @cache.cached(timeout=300)  # Cache directory list for 5 minutes
 def list_directories():
     # List all directories in the AUDIO_LIB
@@ -35,7 +35,7 @@ def list_directories():
     return jsonify(dirs)
 
 # Caching file listing in each directory for faster performance
-@app.route('/ccerapp/files/<path:directory>', methods=['GET'])
+@app.route('/files/<path:directory>', methods=['GET'])
 @cache.cached(timeout=300)  # Cache file list for 5 minutes
 def list_files(directory):
     # Decode the URL-encoded directory path
@@ -67,7 +67,7 @@ def list_files(directory):
         return jsonify({"error": "Directory not found"}), 404
 
 # Function to serve audio files from the directory
-@app.route('/ccerapp/audio/<path:directory>/<path:filename>', methods=['GET'])
+@app.route('/audio/<path:directory>/<path:filename>', methods=['GET'])
 def play_audio(directory, filename):
     # Decode the URL-encoded paths
     directory = unquote(directory)
