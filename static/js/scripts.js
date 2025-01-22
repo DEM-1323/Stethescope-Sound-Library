@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
-  loadLibraries(); // Load libraries when the document is ready
+  scriptName = document.body.getAttribute("script_name") || ""; // Get the script name
+  loadLibraries(scriptName); // Load libraries when the document is ready
   setupAudioControls(); // Set up audio controls (play, pause, prev, next)
 });
 
@@ -14,14 +15,14 @@ let lastDirectory = null; // Track the last directory that played audio
 let lastFile = null; // Track the last file being played
 let lastFilesList = []; // Store the list of files in the last played directory
 let fileCache = {}; // Cache object to store previously fetched audio files by directory
-
+let scriptName = "";
 /**
  * Fetches the list of directories from the server and populates them into
  * the library list in the HTML. Adds click event listeners to each directory
  * that will trigger loading of audio files from the selected directory.
  */
-function loadLibraries() {
-  fetch("/directories")
+function loadLibraries(scriptName) {
+  fetch(`${scriptName}/directories`)
     .then((response) => response.json())
     .then((directories) => {
       const libraryListElement = document.getElementById("libraryList");
@@ -35,7 +36,7 @@ function loadLibraries() {
           clearSelections(libraryListElement); // Deselect all previously selected directories
           li.classList.add("selected"); // Highlight the clicked directory
           currentDirectory = dir; // Set the clicked directory as the current directory
-          loadAudioFiles(dir); // Load the audio files in the selected directory
+          loadAudioFiles(scriptName, dir); // Load the audio files in the selected directory
         });
         libraryListElement.appendChild(li); // Append the directory to the list
       });
@@ -48,14 +49,14 @@ function loadLibraries() {
  * has been previously loaded, it uses cached data instead of fetching it again.
  * This reduces redundant fetch requests and speeds up the user experience.
  */
-function loadAudioFiles(directory) {
+function loadAudioFiles(scriptName, directory) {
   if (fileCache[directory]) {
     // If the directory is cached, load files from the cache
     console.log("Using cached files for directory:", directory);
     populateFileList(directory, fileCache[directory]);
   } else {
     // If not cached, fetch the files from the server
-    fetch(`/files/${encodeURIComponent(directory)}`)
+    fetch(`${scriptName}/files/${encodeURIComponent(directory)}`)
       .then((response) => response.json())
       .then((files) => {
         fileCache[directory] = files; // Cache the fetched files for future use
@@ -123,7 +124,7 @@ function populateFileList(directory, files) {
       lastFilesList = files;
       currentIndex = index;
 
-      playAudio(directory, file[0]); // Play the selected audio file
+      playAudio(scriptName, directory, file[0]); // Play the selected audio file
     });
 
     audioListElement.appendChild(listItem); // Add the list item to the audio list
@@ -139,7 +140,7 @@ function populateFileList(directory, files) {
  * Plays the selected audio file. The file is fetched from the server and played
  * using the global `audio` object. The now playing UI is also updated.
  */
-function playAudio(directory, file) {
+function playAudio(scriptName, directory, file) {
   const safeDirectory = encodeURIComponent(directory); // URL-safe encoding
   const safeFile = encodeURIComponent(file); // URL-safe encoding
 
@@ -149,7 +150,7 @@ function playAudio(directory, file) {
   handleLongNameScroll(nowPlaying, document.getElementById("audioTitle")); // Handle scrolling for long names
 
   // Set the audio source and play the file
-  audio.src = `/audio/${safeDirectory}/${safeFile}`;
+  audio.src = `${scriptName}/audio/${safeDirectory}/${safeFile}`;
   audio.play();
   isPlaying = true; // Mark audio as playing
   updatePlayPauseButton(); // Update the play/pause button state
@@ -242,7 +243,7 @@ function setupAudioControls() {
     } else {
       currentIndex--;
     }
-    playAudio(lastDirectory, lastFilesList[currentIndex][0]); // Play previous track
+    playAudio(scriptName, lastDirectory, lastFilesList[currentIndex][0]); // Play previous track
     updateTrackIndex(currentIndex); // Update UI to reflect the selected track
   });
 
@@ -252,7 +253,7 @@ function setupAudioControls() {
     } else {
       currentIndex++;
     }
-    playAudio(lastDirectory, lastFilesList[currentIndex][0]); // Play next track
+    playAudio(scriptName, lastDirectory, lastFilesList[currentIndex][0]); // Play next track
     updateTrackIndex(currentIndex); // Update UI to reflect the selected track
   });
 }
