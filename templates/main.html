@@ -1,26 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Character encoding and viewport configuration for responsive design -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Stethoscope Sound Library</title>
+
+    <!-- External resource loading -->
+    <!-- CSS styles are loaded with Flask's url_for to handle dynamic paths -->
     <link
       rel="stylesheet"
       href="{{url_for('static', filename='css/styles.css', _external=True)}}"
     />
+
+    <!-- Google Fonts integration for typography -->
+    <!-- DM Serif Text font is used for headers and important text elements -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Font Awesome integration for icons -->
+    <!-- Used throughout the interface for playback controls and indicators -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
   </head>
   <body>
+    <!-- Main application container -->
     <div class="App">
+      <!-- Header section with logo and department title -->
       <header class="App-Header">
         <img
           src="{{url_for('static', filename='images/umb-logo.svg', _external=True)}}"
@@ -29,29 +41,45 @@
         />
         <h1 id="Department-Title">Center for Clinical Education & Research</h1>
       </header>
+
+      <!-- Main title section -->
       <div class="App-Title">
         <h1 id="Title">Stethoscope Sound Library</h1>
       </div>
+
+      <!-- Main content area with library selection and file listing -->
       <div class="Audio-Library">
+        <!-- Left panel: Library categories selection -->
         <div class="Library-Select">
           <h3>Libraries</h3>
           <ul id="libraryList"></ul>
         </div>
+        <!-- Right panel: Audio files listing -->
         <div class="File-Select" id="File-Select">
           <h3>Audio Files</h3>
           <ul id="audioList"></ul>
         </div>
       </div>
+
+      <!-- Audio player section with playback controls -->
       <div class="Audio-Player" id="audioPlayer">
+        <!-- Track title display with scrolling capability -->
         <div class="title-track" id="audioTitle">
           <h2 class="audio-title" id="nowPlaying">Audio File Title</h2>
         </div>
+
+        <!-- Large central play/pause button -->
         <button id="bigPlayPauseBtn" class="play-pause-btn">
           <i class="fa-regular fa-circle-play"></i>
         </button>
+
+        <!-- Playback time display and progress bar -->
         <h3 class="playback-time">0:00 / 0:00</h3>
         <input type="range" id="seekSlider" value="0" class="seek-slider" />
+
+        <!-- Additional playback controls -->
         <div class="playBackCtrls">
+          <!-- Previous, play/pause, and next controls -->
           <div class="play-pause-skip">
             <button id="prevBtn" class="skip-btn">
               <i class="fa-solid fa-backward-step"></i>
@@ -63,6 +91,7 @@
               <i class="fa-solid fa-forward-step"></i>
             </button>
           </div>
+          <!-- Special playback functions (repeat toggle) -->
           <div class="special-functions">
             <button id="repeatBtn" class="function-btn">
               <i class="fa-solid fa-repeat"></i>
@@ -70,6 +99,8 @@
           </div>
         </div>
       </div>
+
+      <!-- Footer with copyright information -->
       <footer class="App-Footer">
         <h3 id="Footer-text">
           Copyright &copy <span id="copyrightYear">2024</span>
@@ -77,6 +108,9 @@
         </h3>
       </footer>
     </div>
+
+    <!-- JavaScript integration -->
+    <!-- Main application logic loaded through Flask's url_for -->
     <script src="{{url_for('static', filename='js/scripts.js', _external=True)}}"></script>
   </body>
 </html>

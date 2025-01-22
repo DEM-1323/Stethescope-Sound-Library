@@ -1,18 +1,32 @@
+/**
+ * Stethoscope Sound Library - Core Styles
+ *
+ * This stylesheet implements a mobile-first, responsive design system
+ * for the Stethoscope Sound Library application. The design uses
+ * CSS Flexbox for layouts and implements dynamic sizing using
+ * clamp() and calc() for responsive typography and spacing.
+ */
+
+/* Base Styles and Reset
+-------------------------------------------------- */
 * {
     box-sizing: border-box;
 }
 
-/* Styling for iPads first and then larger screens */
+/* Core layout configuration with mobile-first approach */
 html, body {
     margin: 0;
     padding: 0;
     height: 100%;
     overflow: hidden;
     background-color: #005A8B;
+    /* Responsive font scaling using viewport units */
     font-size: calc(0.5vh + 0.5vw);
 }
 
-/* App Font Styles */
+/* Typography System
+-------------------------------------------------- */
+/* Primary font settings for all text elements */
 h1, h2, h3, ul, li {
     font-family: 'DM Serif Text', serif;
     font-weight: 400;
@@ -20,67 +34,79 @@ h1, h2, h3, ul, li {
     color: white;
 }
 
-/* App Container Flex Box */
+/* Application Layout Structure
+-------------------------------------------------- */
+/* Main container using flexbox for vertical layout */
 .App {
     display: flex;
-    flex-direction: column; /* Each app section is a separate row */
-    align-items: center; /* Horizontal center alignment for all sections */
-    gap: 2vh; /* Vertical gap between sections */
+    flex-direction: column;
+    align-items: center;
+    gap: 2vh;
     margin: 0 auto;
-    height: 100%; /* Fill the entire height of the viewport */
+    height: 100%;
     background-color: #fff;
 }
 
-/* Header and Footer styles */ 
+/* Header and Footer Components
+-------------------------------------------------- */
+/* Shared styles for top and bottom bars */
 .App-Header, .App-Footer {
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 10;
-    height: clamp(4vh, 5%, 6vh); /* Clamped height for multiple device screen heights */
+    /* Responsive height constraints */
+    height: clamp(4vh, 5%, 6vh);
     width: 100%;
     background-color: #005A8B;
 }
 
-/* Header and Logo styles */
+/* Header-specific configuration */
 .App-Header {
-    flex-direction: column; /* Stack logo and department title */
+    flex-direction: column;
     padding: 5vh 0;
-    box-shadow: 0px 2px 8px 3px rgba(0, 0, 0, 0.2); /* Adds depth */
+    /* Subtle depth effect */
+    box-shadow: 0px 2px 8px 3px rgba(0, 0, 0, 0.2);
 }
 
+/* Logo sizing with responsive constraints */
 .Logo {
     height: clamp(2vh, 40px, 4vh);
 }
 
+/* Department title with responsive typography */
 #Department-Title {
     margin: 1vh 0 0;
     text-align: center;
     font-size: clamp(calc(1rem + 12px), 3rem, 35px);
 }
 
-/* App Title styles */
+/* Main title styling */
 #Title {
     text-align: center;
     font-size: clamp(calc(1rem + 16px), 4rem, 45px);
-    color:#005A8B;
+    color: #005A8B;
 }
 
-/*Audio Library styles */
+/* Audio Library Interface
+-------------------------------------------------- */
+/* Base layout for library components */
 .Audio-Library, .Library-Select, .File-Select {
     display: flex;
 }
 
+/* Main library container configuration */
 .Audio-Library {
     flex: 0 1 auto;
     height: min(clamp(150px, 30%, 30vh), 250px);
     width: 80%;
-    overflow: hidden; /* cuts any overflow in the container */
+    overflow: hidden;
     border-radius: calc(1vh + 5px);
     box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, 0.2);
     background-color: white;
 }
 
+/* Section headers within library */
 .Audio-Library h3 {
     margin: 0;
     padding: 0.75vh 1vh;
@@ -89,56 +115,63 @@ h1, h2, h3, ul, li {
     background-color: #005A8B;
 }
 
+/* Library panel layouts */
 .Library-Select, .File-Select {
     flex-direction: column;
     position: relative;
 }
 
+/* Scrollable content areas */
 #libraryList, #audioList {
     flex-grow: 1;
     overflow-y: auto;
 }
 
-/* Library Selection Styles */
+/* Library selection panel */
 .Library-Select {
     flex: 4;
     width: 40%;
 }
 
-/* File Selection Styles */
+/* File selection panel */
 .File-Select {
     flex: 6;
     width: 60%;
 }
 
+/* Vertical divider line for File-Select panel */
 .File-Select::before {
     position: absolute;
     top: 1%;
     bottom: 0;
-    left: calc(0%); /* Adjust this depending on where you want the line */
-    z-index: 10; 
-    width: min(0.2rem, 3px); /* Width of the line */
+    left: calc(0%);
+    z-index: 10;
+    width: min(0.2rem, 3px);
     content: '';
-    background-color: #005A8B; /* Color of the line */
+    background-color: #005A8B;
 }
 
+/* Additional divider when files are present */
 .File-Select.files::after {
     position: absolute;
     top: 1%;
     bottom: 0;
-    left: calc(75%); /* Adjust this depending on where you want the line */
+    left: calc(75%);
     z-index: 1;
-    width: min(0.2rem, 3px); /* Width of the line */
+    width: min(0.2rem, 3px);
     content: '';
-    background-color: #005A8B; /* Color of the line */
+    background-color: #005A8B;
 }
 
-/* List Styles for Audio Library */
+/* Interactive Elements
+-------------------------------------------------- */
+/* Hover states for clickable items */
 .Library-Select li:hover, .audio-item:hover {
     background-color: #CCCCCC;
     cursor: pointer;
 }
 
+/* List styling */
 ul {
     margin: 0;
     padding: 0;
@@ -146,37 +179,43 @@ ul {
     list-style: none;
 }
 
+/* List item base styling */
 ul li {
     padding: .75vh 1.75vh;
     font-size: min(clamp(1.25rem, 2rem, 18px), 18px);
     color: #005A8B;
 }
 
+/* Selected item styling */
 li.selected {
-    border-top: solid #005A8B; 
-    border-bottom: solid #005A8B; 
+    border-top: solid #005A8B;
+    border-bottom: solid #005A8B;
     box-shadow: inset 0px -1px 2px 1px rgba(0, 0, 0, 0.2);
     background-color: #FEDE42;
     color: #132245;
 }
 
-li.selected:first-child { 
-    border-top: none; /* first li won't have top border */
+/* Edge case handling for selected items */
+li.selected:first-child {
+    border-top: none;
 }
 
 li.selected:last-child {
-    border-bottom: none; /* last li won't have bottom border */
-    box-shadow: none; /* last li won't have box shadow */
+    border-bottom: none;
+    box-shadow: none;
 }
 
 li.selected:is(:first-child):is(:last-child) {
-    border-bottom: solid #005A8B; /* Add bottom border if single li in list */
+    border-bottom: solid #005A8B;
 }
+
 li.selected:hover {
     background-color: #FEDE42;
 }
 
-/* Audio Item Styles */
+/* Audio Item Components
+-------------------------------------------------- */
+/* Audio item container */
 .Audio-Item {
     display: flex;
     justify-content: space-between;
@@ -185,6 +224,7 @@ li.selected:hover {
     cursor: pointer;
 }
 
+/* Empty state styling */
 .Audio-Item.empty {
     padding-left: 1.75vh;
 }
@@ -193,6 +233,7 @@ li.selected:hover {
     background-color: transparent !important;
 }
 
+/* Audio name display */
 .audio-name {
     display: inline-block;
     position: relative;
@@ -200,10 +241,12 @@ li.selected:hover {
     color: #005A8B;
 }
 
+/* Long text handling */
 .long-name, .audio-name:hover {
     animation: scroll-text 10s linear infinite;
 }
 
+/* Name track container */
 .name-track {
     flex: 1;
     position: relative;
@@ -214,6 +257,7 @@ li.selected:hover {
     white-space: nowrap;
 }
 
+/* Duration display */
 .time-code {
     flex: 1;
     max-width: 25%;
@@ -222,7 +266,9 @@ li.selected:hover {
     color: #005A8B;
 }
 
-/* Audio Player Styles */
+/* Audio Player Component
+-------------------------------------------------- */
+/* Player container */
 .Audio-Player {
     display: flex;
     flex-direction: column;
@@ -238,6 +284,7 @@ li.selected:hover {
     color: white;
 }
 
+/* Title track display */
 .title-track {
     position: relative;
     min-height: 5vh;
@@ -248,6 +295,7 @@ li.selected:hover {
     text-align: center;
 }
 
+/* Audio title styling */
 .audio-title {
     display: inline-block;
     position: relative;
@@ -255,12 +303,15 @@ li.selected:hover {
     font-size: min(clamp(2rem, 2.5rem, 30px), 30px);
 }
 
-/* Playback Controls Styles */
+/* Playback Controls
+-------------------------------------------------- */
+/* Main play/pause button */
 #bigPlayPauseBtn {
     margin: auto 0;
     font-size: min(clamp(5rem, 18rem, 250px), 250px);
 }
 
+/* Time display */
 .playback-time {
     margin: 0.5vh 0.5vh 0.5vh 0;
     width: 90%;
@@ -268,57 +319,60 @@ li.selected:hover {
     font-size: min(clamp(1.5rem, 2rem, 20px), 20px);
 }
 
+/* Progress slider styling */
 .seek-slider {
-    margin:0;
+    margin: 0;
     padding: 0;
-    width: 90%;    
+    width: 90%;
     border-radius: 100vh;
     appearance: none;
     cursor: pointer;
     background: white;
-    
 }
 
+/* Slider thumb styling for WebKit */
 .seek-slider::-webkit-slider-thumb {
     margin-top: -.75vh;
     border: solid 4px #78AFE9;
-    height: 3vh; /* Height of the thumb */
-    width: 3vh; /* Width of the thumb */
-    -webkit-appearance: none; /* Required for WebKit browsers */
+    height: 3vh;
+    width: 3vh;
+    -webkit-appearance: none;
     appearance: none;
-    cursor: pointer; /* Cursor on hover */
-    border-radius: 50%; /* Makes it circular */
-    background: #005A8B; /* Thumb background color */
+    cursor: pointer;
+    border-radius: 50%;
+    background: #005A8B;
 }
 
-/* Styles the slider track for WebKit browsers */
+/* Slider track styling for WebKit */
 .seek-slider::-webkit-slider-runnable-track {
     height: 1.5vh;
     width: 100%;
 }
+
+/* Slider thumb styling for Firefox */
 .seek-slider::-moz-range-thumb {
     margin-top: -.75vh;
     border: solid 4px #78AFE9;
-    height: 3vh; /* Height of the thumb */
-    width: 3vh; /* Width of the thumb */
-    -webkit-appearance: none; /* Required for WebKit browsers */
+    height: 3vh;
+    width: 3vh;
     appearance: none;
-    cursor: pointer; /* Cursor on hover */
-    border-radius: 50%; /* Makes it circular */
-    background: #005A8B; /* Thumb background color */
+    cursor: pointer;
+    border-radius: 50%;
+    background: #005A8B;
 }
 
-/* Styles the slider track for WebKit browsers */
+/* Slider track styling for Firefox */
 .seek-slider::-moz-range-track {
     height: 1.5vh;
     width: 100%;
 }
 
-/* Optional: style for hover effect on the slider */
+/* Slider hover effect */
 .seek-slider:hover {
-    opacity: 1; /* Full opacity on hover */
+    opacity: 1;
 }
 
+/* Playback controls container */
 .playBackCtrls {
     display: flex;
     flex-direction: row;
@@ -327,6 +381,8 @@ li.selected:hover {
     margin: 2vh 0 3vh 0;
     width: 90%;
 }
+
+/* Play/pause and skip controls */
 .play-pause-skip {
     display: flex;
     flex-direction: row;
@@ -338,6 +394,7 @@ li.selected:hover {
     transform: translateX(-50%);
 }
 
+/* Control button styling */
 .play-pause-btn, .skip-btn {
     border: none;
     padding: 0;
@@ -347,6 +404,7 @@ li.selected:hover {
     color: white;
 }
 
+/* Special function controls */
 .special-functions {
     display: flex;
     flex-direction: column;
@@ -354,6 +412,7 @@ li.selected:hover {
     margin: 0 5% 0 auto;
 }
 
+/* Function button styling */
 .function-btn {
     border: none;
     padding: 0 1vw;
@@ -363,13 +422,15 @@ li.selected:hover {
     background: none;
 }
 
+/* Repeat button state */
 #repeatBtn {
     opacity: 1;
 }
 
-/* Footer Styles */
+/* Footer Component
+-------------------------------------------------- */
 .App-Footer {
-    margin-top: auto; /* Pushes footer to bottom of App container */
+    margin-top: auto;
     padding: 3vh 0;
 }
 
@@ -378,36 +439,40 @@ li.selected:hover {
     font-size: min(clamp(1rem, 1.5rem, 20px), 20px);
 }
 
-/* Animations */
+/* Animations
+-------------------------------------------------- */
 @keyframes scroll-text {
-    0%, 100% { 
-        transform: translateX(0); 
+    0%, 100% {
+        transform: translateX(0);
     }
-    50% { 
-        transform: translateX(calc(-100% + 100px)); /* Adjust 100px to ensure it bounces back before the text fully exits the view */
+    50% {
+        transform: translateX(calc(-100% + 100px));
     }
 }
 
-/* Media Queries */
+/* Responsive Design
+-------------------------------------------------- */
+/* Tablet breakpoint */
 @media (max-width:1024px) {
     html, body {
         background-color: #fff;
     }
     .App {
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: add shadow for better focus */
-      }
-      .Audio-Player {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .Audio-Player {
         margin: calc(10px + 3vh) 0;
     }
-} 
+}
 
+/* Desktop breakpoint */
 @media (min-width: 1025px) {
     html, body {
-        background-color: #fff; /* Change background color to add contrast */
+        background-color: #fff;
     }
     .App {
-      max-width: 900px; /* max-width to restrict the app size */
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* add shadow for better focus */
+        max-width: 900px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
     ul li {
         padding: .5vh 2vh;
@@ -423,6 +488,7 @@ li.selected:hover {
     }
 }
 
+/* Large screen optimization */
 @media ((min-width: 1025px) and (min-height: 1250px)) or ((min-width: 1025px) and (max-height: 1249px)) {
     html, body {
         font-size: calc(0.5vh + 0.125vw);
